@@ -1,0 +1,87 @@
+<%- include('../layouts/admin-layout/adminHeader.ejs') %>
+
+
+    <br/>
+
+    <form action="">
+        <!-- <input class=" w-25" type="text" placeholder="Search for name, email or mobile" name="search" >
+        <input class="btn btn-primary my-2 my-sm-0" type="submit" value="SEARCH"> -->
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="input-group">
+                        <input type="text" class="form-control" placeholder="Search for name, email, or mobile" name="search">
+                        <div class="input-group-append">
+                            <button class="btn btn-primary" type="submit">SEARCH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </form>
+
+    <br/><br/>
+
+
+
+
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th scope="col">SLNo.</th>
+                <th scope="col">Name</th>
+                <th scope="col">Email</th>
+                <th scope="col">Mobile Number</th>
+                <th scope="col">Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            <% users.forEach((user,index)=> { %>
+                <tr>
+                    <td>
+                        <%= index+1 %>
+                    </td>
+                    <td>
+                        <%= user.name %>
+                    </td>
+                    <td>
+                        <%= user.email %>
+                    </td>
+                    <td>
+                        <%= user.mobile %>
+                    </td>
+                    <td>
+                        <a class="btn btn-warning my-2 my-sm-0" href="/admin/edit-user?id=<%= user.id %>">Edit</a>
+                        <a class="btn btn-danger my-2 my-sm-0" href="/admin/delete-user?id=<%= user.id %>">Delete</a>
+                    </td>
+                </tr>
+                <% }); %>
+        </tbody>
+    </table>
+
+    <br/>
+
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <nav>
+                    <ul class="pagination justify-content-center">
+                        <% for (let j=1; j <=totalPages; j++) { %>
+                            <li class="page-item">
+                                <a class="page-link" href="?page=<%= j %>">
+                                    <%= j %>
+                                </a>
+                            </li>
+                            <% } %>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+
+
+
+    <%- include('../layouts/admin-layout/adminFooter.ejs')%>

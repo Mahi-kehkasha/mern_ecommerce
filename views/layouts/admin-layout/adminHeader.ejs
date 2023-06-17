@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -18,22 +19,22 @@
         aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <a class="navbar-brand" href="#"></a>
+    <a class="navbar-brand mx-3" href="/admin/dashboard">ADMIN</a>
 
     <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
-        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0 mx-3">
             <li class="nav-item active">
-                <a class="nav-link" href="#"><span class="sr-only">(current)</span></a>
+                <a class="btn btn-success my-2 my-sm-0 " href="/admin/new-user">ADD NEW USER <span class="sr-only">(current)</span></a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#"></a>
-            </li>
-            
+            <!-- <li class="nav-item">
+                <a class="nav-link" href="#">Arundhu</a>
+            </li> -->
+
         </ul>
-        <!-- <form class="form-inline my-2 my-lg-0" action="/login">
-            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">LOGIN</button>
-        </form> -->
+        <form class="form-inline my-2 my-lg-0" action="/admin/logout">
+            <button class="btn btn-outline-danger my-2 my-sm-0" type="submit">LOGOUT</button>
+        </form>
     </div>
 </nav>
+
 <body>
-    
