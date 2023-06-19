@@ -1,19 +1,37 @@
 <%- include('../layouts/header.ejs') %>
 
-
-<h4>Welcome Home</h4>
-<a href="/logout">LOGOUT</a>
-
-
-<div class="card" style="width: 18rem;">
-    <img src="..." class="card-img-top" alt="...">
-    <div class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's
-            content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
-    </div>
+<div>
+    <a class="btn btn-danger my-2 my-sm-0 m-5" href="/logout">LOGOUT</a>
+<h4 class="justify-content-center text-center pt-3 mb-4">Destination Flyaways</h4>
+    
 </div>
 
+
+
+<% const products=[ { name: "Valley of Flowers" ,img:"https://assets.traveltriangle.com/blog/wp-content/uploads/2015/07/Valley-of-flowers-uttrakhand.jpg" ,feat: "Best Sunrises" , des: "jfjfj fjjf fjjd jdjjd" }, 
+{ name: "Jaipur forts" , img:"https://static.toiimg.com/thumb/msid-92089121,width-748,height-499,resizemode=4,imgsize-139308/.jpg" ,feat: "Amazing Stays" ,des: "jfjfj fjjf fjjd jdjjd" }, 
+{ name: "Moonar hills" , img:"https://www.fabhotels.com/blog/wp-content/uploads/2019/09/Munnar-Kerala-1.jpg", feat: "Best climate" , des: "jfjfj fjjf fjjd jdjjd" } ]; %>
+
+
+    <div class="container">
+        <div class="row flex-row">
+                <% products.forEach(product=> { %>
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src=<%= product.img%> class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                <%= product.name%>
+                            </h5>
+                            <p class="card-text"><%= product.feat%></p>
+                            <a href="#" class="btn btn-primary">Book Now</a>
+                        </div>
+                    </div>
+                </div>
+             <% })%>
+
+            
+        </div>
+    </div>
 
 <%- include('../layouts/footer.ejs') %>
