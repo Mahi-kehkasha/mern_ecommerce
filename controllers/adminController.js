@@ -13,6 +13,12 @@ const securePassword = async (password) => {
 
 const loadLogin = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     res.render("login");
   } catch (error) {
     console.log(error.message);
@@ -46,6 +52,12 @@ const verifyLogin = async (req, res) => {
 
 const adminLogout = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     req.session.destroy();
     res.redirect("/admin");
   } catch (error) {
@@ -55,6 +67,12 @@ const adminLogout = async (req, res) => {
 
 const loadDashboard = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     var search = "";
     if (req.query.search) {
       search = req.query.search;

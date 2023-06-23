@@ -12,6 +12,12 @@ const securePassword = async (password) => {
 
 const loadRegister = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     res.render("registration");
   } catch (error) {
     console.log(error.message);
@@ -47,6 +53,12 @@ const insertUser = async (req, res) => {
 
 const loginLoad = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     res.render("login");
   } catch (error) {
     console.log(error.message);
@@ -79,6 +91,12 @@ const verifyLogin = async (req, res) => {
 
 const loadHome = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
+    res.header("Expires", "-1");
+    res.header("Pragma", "no-cache");
     res.render("home");
   } catch (error) {
     console.log(error.message);
@@ -87,6 +105,10 @@ const loadHome = async (req, res) => {
 
 const userLogout = async (req, res) => {
   try {
+    res.header(
+      "Cache-Control",
+      "no-cache, private, no-store, must-revalidate, max-stale=0, post-check=0, pre-check=0"
+    );
     req.session.destroy();
     res.redirect("/");
   } catch (error) {
