@@ -25,7 +25,8 @@
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="text" id="form3Example1c" class="form-control" name="name" value="<%= user.name %>" required />
+                                                    <input type="text" id="username" class="form-control" name="name" value="<%= user.name %>" onkeyup="validateName()" />
+                                                    <span class="formerror text-danger" id="name-info"></span>
                                                     <label class="form-label" for="form3Example1c">Name</label>
                                                 </div>
                                             </div>
@@ -33,7 +34,8 @@
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="email" id="form3Example3c" class="form-control" type="email" name="email" value="<%= user.email %>" required/>
+                                                    <input type="email" id="email" class="form-control" type="email" name="email" value="<%= user.email %>" onkeyup="validateEmail()"/>
+                                                    <span class="formerror text-danger" id="email-info"></span>
                                                     <label class="form-label" for="form3Example3c"> Email</label>
                                                 </div>
                                             </div>
@@ -41,7 +43,8 @@
                                             <div class="d-flex flex-row align-items-center mb-4">
                                                 <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                                 <div class="form-outline flex-fill mb-0">
-                                                    <input type="text" id="form3Example4c" class="form-control" type="text" name="mno" value="<%= user.mobile %>" required/>
+                                                    <input type="text" id="mobileNo" class="form-control" type="text" name="mno" value="<%= user.mobile %>" onkeyup="validateMobileNo()"/>
+                                                    <span class="formerror text-danger" id="mobileNo-info"></span>
                                                     <label class="form-label" for="form3Example4c">Mobile</label>
                                                 </div>
                                             </div>
@@ -49,7 +52,7 @@
                                            <input type="hidden" name="id" value="<%= user._id %>">
         
                                             <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                                <button type="submit" class="btn btn-primary btn-lg">UPDATE USER</button>
+                                                <button type="submit" class="btn btn-primary btn-lg" onclick="validateForm()">UPDATE USER</button>
                                             </div>
         
                                         </form>
@@ -65,20 +68,101 @@
         </section>
 
 
-            <!-- <form action=" " method="post">
+            <script>
+                var nameError = document.getElementById("name-info");
+                    var emailError = document.getElementById("email-info");
+                    var mobileNoError = document.getElementById("mobileNo-info");
+                    var submitError = document.getElementById("submit-info");
+
+                    function validateName() {
+                        var name = document.getElementById("username").value;
+
+                        if (name.length == 0) {
+                            nameError.innerHTML = "Username is required";
+                            return false;
+                        }
+
+                        if (!name.match(/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/)) {
+                            nameError.innerHTML = "Invalid Username";
+                            return false;
+                        } else {
+                            nameError.innerHTML = "";
+                            return true;
+                        }
+                    }
+
+                    function validateEmail() {
+                        var email = document.getElementById("email").value;
+
+                        if (email.length == 0) {
+                            emailError.innerHTML = "E-mail is required";
+                            return false;
+                        }
+
+                        if (
+                            !email.match(
+                                /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+                            )
+                        ) {
+                            emailError.innerHTML = "Invalid e-mail address";
+                            return false;
+                        }
+
+                        emailError.innerHTML = "";
+                        return true;
+                    }
+
+                    function validateMobileNo() {
+                        var phone = document.getElementById("mobileNo").value;
+
+                        if (phone.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)) {
+                            mobileNoError.innerHTML = "Enter Only Digits";
+                            return false;
+                        }
+
+                        if (phone.length == 0) {
+                            mobileNoError.innerHTML = "Mobile Number required";
+                            return false;
+                        }
+
+                        if (phone.length !== 10) {
+                            mobileNoError.innerHTML = "Mobile Number should be ten digits";
+                            return false;
+                        }
+
+                        mobileNoError.innerHTML = "";
+                        return true;
+                    }
 
 
-                <input type="text" name="name" value="<%= user.name %>"  placeholder="Enter name" required>
-                <br><br>
-                <input type="email" name="email" value="<%= user.email %>"  placeholder="Enter email" required>
-                <br><br>
-                <input type="text" name="mno" value="<%= user.mobile %>" placeholder="Enter mobile number" required>
-                <br><br>
-                <input type="hidden" name="id" value="<%= user._id %>">
-                <input type="submit" value="Update User">
-
-            </form> -->
-
+                    function validateForm() {
+                        if (
+                            !validateName() &&
+                            !validateEmail() &&
+                            !validateMobileNo()
+                        ) {
+                            submitError.style.direction = "block";
+                            submitError.innerHTML = "Please Fix the errors to Register";
+                            event.preventDefault();
+                            setTimeout(function () {
+                                submitError.style.display = "none ";
+                            }, 3000);
+                            return false;
+                        } else if (
+                            !validateName() ||
+                            !validateEmail() ||
+                            !validateMobileNo()
+                        ) {
+                            submitError.style.direction = "block";
+                            submitError.innerHTML = "Please Enter All Required Fields to Register";
+                            event.preventDefault();
+                            setTimeout(function () {
+                                submitError.style.display = "none ";
+                            }, 3000);
+                            return false;
+                        }
+                    }
+            </script>
         
 
             <%- include('../layouts/admin-layout/adminFooter.ejs')%>
