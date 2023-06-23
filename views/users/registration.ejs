@@ -11,13 +11,14 @@
 
                                 <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">REGISTER</p>
 
-                                <form class="mx-1 mx-md-4" method="post">
+                                <form class="mx-1 mx-md-4" method="post" id="Form" name="myForm">
 
                                     <div class="d-flex flex-row align-items-center mb-4">
                                         <i class="fas fa-user fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example1c">Your Name</label>
-                                            <input type="text" id="form3Example1c" class="form-control" name="name" required/>
+                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="text" id="username" class="form-control" name="username"  onkeyup="validateName()"/>
+                                            <b><span class="formerror text-danger" id="name-info"></span></b>
                                         </div>
                                     </div>
 
@@ -25,7 +26,8 @@
                                         <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example3c">Your Email</label>
-                                            <input type="email" id="form3Example3c" class="form-control" name="email"  required/>    
+                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="email" id="email" class="form-control" name="email"  onkeyup="validateEmail()"/> 
+                                            <b><span class="formerror text-danger" id="email-info"></span></b>
                                         </div>
                                     </div>
 
@@ -33,7 +35,8 @@
                                         <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example4c">Mobile</label>
-                                            <input type="text" id="form3Example4c" class="form-control" name="mno"  required/>
+                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="text" id="mobileNo" class="form-control" name="mno"  onkeyup="validateMobileNo()"/>
+                                            <b><span class="formerror text-danger" id="mobileNo-info"></span></b>
                                         </div>
                                     </div>
 
@@ -41,12 +44,14 @@
                                         <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
                                         <div class="form-outline flex-fill mb-0">
                                             <label class="form-label" for="form3Example4cd">Password</label>
-                                            <input type="password" id="form3Example4cd" class="form-control" name="password" required/>   
+                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="password" id="password" class="form-control" name="password" onkeyup="validatePassword()"/>   
+                                            <b><span class="formerror text-danger" id="password-info"></span></b>
                                         </div>
                                     </div>
 
+                                    <span class="formerror text-danger" id="submit-info"> </span>
                                     <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <button type="submit" class="btn btn-primary btn-lg mx-3">Register</button>
+                                        <button type="submit" class="btn btn-primary btn-lg mx-3" onclick="validateForm()">Register</button>
                                         <a href="/login" class="btn btn-success btn-lg">Login</a>
                                     </div>
 
@@ -72,6 +77,126 @@
         </div>
     </div>
 </section>
+
+
+<script>
+    var nameError = document.getElementById("name-info");
+    var emailError = document.getElementById("email-info");
+    var mobileNoError = document.getElementById("mobileNo-info");
+    var passwordError = document.getElementById("password-info");
+    var submitError = document.getElementById("submit-info");
+
+    function validateName() {
+        var name = document.getElementById("username").value;
+
+        if (name.length == 0) {
+            nameError.innerHTML = "Username is required";
+            return false;
+        }
+
+        if (!name.match(/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/)) {
+            nameError.innerHTML = "Invalid Username";
+            return false;
+        } else {
+            nameError.innerHTML = "";
+            return true;
+        }
+    }
+
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+
+        if (email.length == 0) {
+            emailError.innerHTML = "E-mail is required";
+            return false;
+        }
+
+        if (
+            !email.match(
+                /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            )
+        ) {
+            emailError.innerHTML = "Invalid e-mail address";
+            return false;
+        }
+
+        emailError.innerHTML = "";
+        return true;
+    }
+
+    function validateMobileNo() {
+        var phone = document.getElementById("mobileNo").value;
+
+        if (phone.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)) {
+            mobileNoError.innerHTML = "Enter Only Digits";
+            return false;
+        }
+
+        if (phone.length == 0) {
+            mobileNoError.innerHTML = "Mobile Number required";
+            return false;
+        }
+
+        if (phone.length !== 10) {
+            mobileNoError.innerHTML = "Mobile Number should be ten digits";
+            return false;
+        }
+
+        mobileNoError.innerHTML = "";
+        return true;
+    }
+
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+
+        if (password.length == 0) {
+            passwordError.innerHTML = "Password is required";
+            return false;
+        }
+        var required = 4;
+        var left = required - password.length;
+
+        if (left > 0) {
+            passwordError.innerHTML = left + " more characters required";
+            return false;
+        }
+
+        passwordError.innerHTML = "";
+        return true;
+    }
+
+    function validateForm() {
+        if (
+            !validateName() &&
+            !validateEmail() &&
+            !validateMobileNo() &&
+            !validatePassword()
+        ) {
+            submitError.style.direction = "block";
+            submitError.innerHTML = "Please Fix the errors to Register";
+            event.preventDefault();
+            setTimeout(function () {
+                submitError.style.display = "none ";
+            }, 3000);
+            return false;
+        } else if (
+            !validateName() ||
+            !validateEmail() ||
+            !validateMobileNo() ||
+            !validatePassword()
+        ) {
+            submitError.style.direction = "block";
+            submitError.innerHTML = "Please Enter All Required Fields to Register";
+            event.preventDefault();
+            setTimeout(function () {
+                submitError.style.display = "none ";
+            }, 3000);
+            return false;
+        }
+    }
+
+
+</script>
 
 
 <% include('../layouts/footer.ejs') %>
