@@ -1,0 +1,108 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>USER MANAGEMENT</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item">User Management</li>
+                    <li class="breadcrumb-item active">View Users</li>
+                </ol>
+            </nav>
+        </div>
+
+        <form action="">
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="input-group">
+                            <input type="text" class="form-control"
+                                placeholder="Search for Books, Authors or Categories" name="search">
+                            <div class="input-group-append">
+                                <button class="btn btn-primary" type="submit"><i class="bi bi-search"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+        <br>
+
+        <section class="section">
+            <div class="row">
+                <div class="col-lg-12">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title"></h5>
+
+
+                            <table class="table table-hover">
+                                <thead>
+                                    <tr>
+                                        <th scope="col">SLNo.</th>
+                                        <th scope="col">Name</th>
+                                        <th scope="col">Email</th>
+                                        <th scope="col">Mobile Number</th>
+                                        <th scope="col">Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <% users.forEach((user,index)=> { %>
+                                        <tr>
+                                            <td>
+                                                <%= index+1 %>
+                                            </td>
+                                            <td>
+                                                <%= user.name %>
+                                            </td>
+                                            <td>
+                                                <%= user.email %>
+                                            </td>
+                                            <td>
+                                                <%= user.mobile %>
+                                            </td>
+                                            <td>
+                                               
+                                                <% if (user.is_blocked) { %>
+                                                    <a class="btn btn-success my-2 my-sm-0" href="/admin/unblock-user/<%= user._id %>">Unblock</a>
+                                                    <% } else { %>
+                                                        <a class="btn btn-danger my-2 my-sm-0" href="/admin/block-user/<%= user._id %>">Block</a>
+                                                        <% } %>
+                                            </td>
+                                        </tr>
+                                        <% }); %>
+                                </tbody>
+                            </table>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <br />
+
+        <div class="container">
+            <div class="row justify-content-center">
+                <div class="col-12">
+                    <nav>
+                        <ul class="pagination justify-content-center">
+                            <% for (let j=1; j <=totalPages; j++) { %>
+                                <li class="page-item">
+                                    <a class="page-link" href="?page=<%= j %>">
+                                        <%= j %>
+                                    </a>
+                                </li>
+                                <% } %>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <%- include('../layouts/adminFooter.ejs')%>

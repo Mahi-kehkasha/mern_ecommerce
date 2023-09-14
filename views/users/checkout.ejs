@@ -1,0 +1,649 @@
+<%- include('../layouts/userHeader.ejs') %>
+<br>
+<div class="checkout-main-area pt-120 pb-120">
+    <div class="container">
+        
+        <div class="customer-zone mb-20">
+            <p class="cart-page-title"><i class="fa-solid fa-tag"></i>Have a coupon? <a class="checkout-click3" href="#">Click here to enter your
+                    code</a></p>
+            <div class="checkout-login-info3">
+                <form action="#">
+                    <input type="text" placeholder="Coupon code">
+                    <input type="submit" value="Apply Coupon">
+                </form>
+            </div>
+        </div>
+        <div class="checkout-wrap pt-30">
+            <div class="row">
+                <div class="col-lg-7">
+                    <div class="billing-info-wrap mr-50">
+                        <h3>Billing Details</h3>
+
+<div class="col-12">
+    <label class="col-sm-10 col-form-label">Choose a Billing Address</label>
+    <div class="col-sm-10">
+        <% addresses.forEach((address, index)=> { %>
+            <div class="card">
+                <h5 class="card-header">
+                    <input class="form-check-input align-items-center ml-1" type="radio" checked name="options"
+                        id="<%= address._id %>" value="<%= address._id %>"
+                        onclick="selectAddress('<%= address.firstName %>', '<%= address.lastName %>', '<%= address.companyName %>', '<%= address.street %>', '<%= address.landmark %>', '<%= address.city %>', '<%= address.state %>', '<%= address.mobileNo %>', '<%= address.email %>')">
+                    &nbsp; &nbsp;&nbsp;&nbsp; Address <%= index + 1 %>&nbsp; &nbsp;&nbsp;
+                        <span><a href="#" data-toggle="modal" data-target="#editAddressModal_<%= address._id %>">
+                            <i class="fa-solid fa-edit"></i>
+                        </a></span>&nbsp;&nbsp;&nbsp;<span><a
+                                onclick="deleteAddress('<%= address._id %>')"><i class="fa-solid fa-trash"></i></a></span>
+                </h5>
+                <div class="card-body">
+                    <p class="card-text" style="color: red;">
+                        <%= address.firstName %>
+                            <%= address.lastName %>, <%= address.companyName %>, <%= address.street %>,
+                                        <%= address.landmark %>, <%= address.city %>, <%= address.state %>, <%=
+                                                        address.mobileNo %>,
+                                                        <%= address.email %>
+                    </p>
+                </div>
+            </div>
+
+            <div class="modal fade" id="editAddressModal_<%= address._id %>" tabindex="-1" role="dialog"
+                aria-labelledby="editAddressModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <div class="row">
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>First Name</label>
+                                        <input type="text" id="firstName_<%= address._id %>" value="<%= address.firstName %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Last Name</label>
+                                        <input type="text" id="lastName_<%= address._id %>" value="<%= address.lastName %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="billing-info mb-20">
+                                        <label>Company Name/ House Name</label>
+                                        <input type="text" id="companyName_<%= address._id %>" value="<%= address.companyName %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="billing-info mb-20">
+                                        <label>Street Address</label>
+                                        <input class="billing-address" id="street_<%= address._id %>" value="<%= address.street %>"
+                                            placeholder="House number and street name" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="billing-info mb-20">
+                                        <label>Landmark</label>
+                                        <input class="billing-address" id="landmark_<%= address._id %>"
+                                            value="<%= address.landmark %>" placeholder="Enter a Landmark" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4">
+                                    <div class="billing-info mb-20">
+                                        <label>Town / City</label>
+                                        <input type="text" id="city_<%= address._id %>" value="<%= address.city %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>State</label>
+                                        <input type="text" id="state_<%= address._id %>" value="<%= address.state %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Pincode</label>
+                                        <input type="text" id="pincode_<%= address._id %>" value="<%= address.pincode %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Mobile No.</label>
+                                        <input type="text" id="mobileNo_<%= address._id %>" value="<%= address.mobileNo %>">
+                                    </div>
+                                </div>
+                                <div class="col-lg-4 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Email Address</label>
+                                        <input type="text" id="email_<%= address._id %>" value="<%= address.email %>">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="button" class="btn btn-primary" onclick="updateAddress('<%= address._id %>')">Save
+                                changes</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <% }); %>
+    </div>
+</div>
+<p id="successMessage" style="display: none; color: green;"></p>
+
+                        
+                        
+                        <div class="checkout-account mt-25">
+                            <input class="checkout-toggle" type="checkbox">
+                            <span>Ship to a different address?</span>
+                        </div>
+                        <form id="addressForm" >
+                        <div class="different-address open-toggle mt-30">
+                            <div class="row">
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>First Name</label>
+                                        <input type="text" name="firstName">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Last Name</label>
+                                        <input type="text" name="lastName">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-20">
+                                        <label>Company Name/ House Name</label>
+                                        <input type="text" name="companyName">
+                                    </div>
+                                </div>
+                                
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-20">
+                                        <label>Street Address</label>
+                                        <input class="billing-address" name="street" placeholder="House number and street name"
+                                            type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-20">
+                                        <label>Landmark</label>
+                                        <input class="billing-address" name="landmark" placeholder="Enter a Landmark" type="text">
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="billing-info mb-20">
+                                        <label>Town / City</label>
+                                        <input type="text" name="city">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>State</label>
+                                        <input type="text" name="state">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Pincode</label>
+                                        <input type="text" name="pincode">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Mobile No.</label>
+                                        <input type="text" name="mobileNo">
+                                    </div>
+                                </div>
+                                <div class="col-lg-6 col-md-6">
+                                    <div class="billing-info mb-20">
+                                        <label>Email Address</label>
+                                        <input type="text" name="email">
+                                    </div>
+                                </div>
+                                <button class="btn btn-primary" type="submit" onclick="addNewAddress()">Submit Address</button>
+                            </div>
+                        </div>
+                        
+                        </form>
+                        <div class="additional-info-wrap">
+                            <label>Order notes</label>
+                            <textarea placeholder="Notes about your order, e.g. special notes for delivery. "
+                                name="message"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-5">
+                    <div class="your-order-area">
+                        <div class="data-container" data-cart-items="<%= JSON.stringify(cart.items) %>" data-total="<%=totalPrice%>">
+                        <form id="orderForm">
+                        <h3>Your order</h3>
+                        <div class="your-order-wrap gray-bg-4">
+                            <div class="your-order-info-wrap">
+                                <div class="your-order-info">
+                                    <ul>
+                                        <li>Product <span>Total</span></li>
+                                    </ul>
+                                </div>
+                                <input type="hidden" name="orderNumber" id="orderNumberInput" value="">
+                                <input type="hidden" id="customerIdInput" value="<%= userId %>">
+                                <div class="your-order-middle">
+                                    <ul>
+                                        <% cart.items.forEach((item)=> { %>
+                                            <li style="color: rgb(120, 7, 241);">
+                                                <%= item.bookId.title %> X <%= item.quantity %> <span>₹<%= item.price %></span>
+                                            </li>
+                                            <% }); %>
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-subtotal">
+                                    <ul>
+                                        <li>Subtotal <span>₹<%= totalPrice %></span></li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-shipping">
+                                    <ul>
+                                        <li>Shipping <div id="selectedAddress">
+                                            <p >Enter your full address</p>
+                                        </div>
+                                        </li>
+                                    </ul>
+                                </div>
+                                <div class="your-order-info order-total">
+                                    <ul>
+                                        <li>Total <span>₹<%= totalPrice %></span></li>
+                                    </ul>
+                                </div>
+                            </div>
+                       
+                            <div class="payment-method">
+                                <div class="pay-top sin-payment">
+                                    <input id="payment_method_1" class="input-radio" type="radio" value="Razorpay"
+                                         name="payment_method">
+                                    <label for="payment_method_1"> Razorypay </label>
+                                    <div class="payment-box payment_method_bacs">
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment">
+                                    <input id="payment-method-2" class="input-radio" type="radio" value="COD"
+                                      checked="checked"  name="payment_method">
+                                    <label for="payment-method-2">Cash On Delivery</label>
+                                    <div class="payment-box payment_method_bacs">
+                                        
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment">
+                                    <input id="payment-method-3" class="input-radio" type="radio" value="Wallet"
+                                        name="payment_method">
+                                    <label for="payment-method-3">Wallet </label>
+                                    <div class="payment-box payment_method_bacs">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as
+                                            the payment reference.</p>
+                                    </div>
+                                </div>
+                                <div class="pay-top sin-payment sin-payment-3">
+                                    <input id="payment-method-4" class="input-radio" type="radio" value="Paypal"
+                                        name="payment_method">
+                                    <label for="payment-method-4">PayPal <img alt=""
+                                            src="assets/images/icon-img/payment.png"><a href="#">What is
+                                            PayPal?</a></label>
+                                    <div class="payment-box payment_method_bacs">
+                                        <p>Make your payment directly into our bank account. Please use your Order ID as
+                                            the payment reference.</p>
+                                    </div>
+                                </div>
+                            </div> 
+                        </div>
+                        </div>
+                        <div class="Place-order">
+                            <button type="button" cart-data="<%= cart.items %>" id="placeOrderButton">Place Order</button>
+                        </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+   
+</div>
+
+<div class="subscribe-area bg-gray pt-115 pb-115">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-5 col-md-5">
+                <div class="section-title">
+                    <h2>keep connected</h2>
+                    <p>Get updates by subscribe our weekly newsletter</p>
+                </div>
+            </div>
+            <div class="col-lg-7 col-md-7">
+                <div id="mc_embed_signup" class="subscribe-form">
+                    <form id="mc-embedded-subscribe-form" class="validate subscribe-form-style" novalidate=""
+                        target="_blank" name="mc-embedded-subscribe-form" method="post"
+                        action="http://devitems.us11.list-manage.com/subscribe/post?u=6bbb9b6f5827bd842d9640c82&amp;id=05d85f18ef">
+                        <div id="mc_embed_signup_scroll" class="mc-form">
+                            <input class="email" type="email" required="" placeholder="Enter your email address"
+                                name="EMAIL" value="">
+                            <div class="mc-news" aria-hidden="true">
+                                <input type="text" value="" tabindex="-1" name="b_6bbb9b6f5827bd842d9640c82_05d85f18ef">
+                            </div>
+                            <div class="clear">
+                                <input id="mc-embedded-subscribe" class="button" type="submit" name="subscribe"
+                                    value="Subscribe">
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        console.log("script running");
+        // Get the "Place Order" button
+        const placeOrderBtn = document.getElementById("placeOrderButton");
+
+        // Add a click event listener to the "Place Order" button
+        placeOrderBtn.addEventListener("click", function (event) {
+            event.preventDefault();
+
+            // Find the selected address radio button
+            const selectedOption = document.querySelector('input[type="radio"][name="options"]:checked');
+            if (!selectedOption) {
+                // Show an error message or handle the case where no address is selected
+                alert("Please select a shipping address.");
+                return;
+            }
+
+            // Find the selected payment radio button
+            const paymentOption = document.querySelector('input[type="radio"][name="payment_method"]:checked');
+            if (!paymentOption) {
+                // Show an error message or handle the case where no payment method is selected
+                alert("Please select a payment method.");
+                return;
+            }
+
+            // Get the address and payment details from the selected radio buttons
+            const addressDetails = selectedOption.value;
+            const paymentDetails = paymentOption.value;
+            const orderNumber= document.getElementById('orderNumberInput').value
+            const customerId= document.getElementById('customerIdInput').value
+            console.log(orderNumber,"oooooooooooooodrfr");
+            console.log(customerId, "cccccccccccccc");
+        
+
+            console.log(addressDetails, "addressDetails");
+            console.log(paymentDetails, "paymentDetails");
+            const dataContainer = document.querySelector(".data-container");
+            const cartItemsData = dataContainer.getAttribute("data-cart-items");
+            const cartItems = JSON.parse(cartItemsData);
+            const totalPrice = dataContainer.dataset.total;
+            
+
+
+            // Prepare the order data to send to the server
+            const orderData = {
+                orderNumber: orderNumber,
+                customerId: customerId,
+                items: cartItems,
+                addressId: addressDetails,
+                orderTotal: totalPrice,
+                paymentMethod: paymentDetails,
+        };
+
+        console.log(orderData, "ordersata");
+
+        // Send the order data to the server using AJAX (jQuery)
+        $.ajax({
+                url: "/place-order",
+                type: "POST",
+                contentType: "application/json",
+                data: JSON.stringify(orderData),
+                success: function (data) {
+                    console.log(data,"DATAAA");
+
+                     if (data.paymentMethod == "COD") {
+                        window.location.href = "/success";
+                    }
+                    else if(data.paymentMethod == "Wallet"){
+                        window.location.href = "/success";
+                    }
+                    else if(data.paymentMethod=="Paypal") {
+                        // Redirect to the PayPal approval URL
+                        console.log(data.approval_url, "data.approval_url");
+                        window.location.href = data.approval_url;
+                    }
+
+                  else if(data.paymentMethod=="Razorpay"){
+                    
+                    
+                         if (data.success && data.payment) {
+
+                        console.log("comingggg razorrrrr");
+                        // Redirect the user to Razorpay checkout
+                        const paymentData = data.payment;
+                        const options = {
+                            key: 'rzp_test_ayOgq7chuv4Aeq',
+                            order_id: paymentData.order_id,
+                            amount: paymentData.amount,
+                            currency: paymentData.currency,
+                            name: 'Just Read',
+                            description: 'Payment for Order',
+                             handler: function (response) {
+                                response.orderData=orderData
+                            if (response.razorpay_payment_id) {
+                                
+
+                                // Payment success, verify payment and complete order placement
+                                $.ajax({
+                                    url: "/verify-razorpay-payment", // Your server route to verify payment
+                                    type: "POST",
+                                    data:  response, // Make sure 'response' is defined somewhere in your code
+                                      
+                                    success: function (verificationData) {
+                                        // Handle the verification response from the server
+                                         if (verificationData.success) {
+                                            // Payment verified, redirect to success page
+                                            window.location.href = "/success";
+                                        }
+                                         else {
+                                            // Payment verification failed, handle appropriately
+                                            window.location.href = "/failure";
+                                        }
+                                    },
+                                    error: function (error) {
+                                        // Handle verification error
+                                        console.error("Error verifying payment:", error);
+                                        window.location.href = "/failure";// change later to failure
+                                    }
+                                });
+                            } else {
+                                // Payment failure, display error or redirect to failure page
+                                window.location.href = "/failure";
+                            }
+                        },
+                    };
+                     const rzp = new Razorpay(options);
+                    rzp.open();
+                }
+                   
+                } else {
+                    // Handle the response from the server if needed
+                    Swal.fire({
+  icon: 'error',
+  title: 'Failed!',
+  text: 'ORDER NOT PLACED',
+  didClose: () => {
+    // This code will be executed after the user closes the Swal dialog
+    location.reload();
+  }
+});
+
+                    console.error("Error placing the order:", data.error);
+                }
+
+                
+            },
+                error: function (error) {
+                    // Handle any errors that occurred during the request
+                    alert("failed2");
+                    console.error("Error placing the order:", error);
+                },
+            });
+        });
+    });
+        </script>
+
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        // Function to generate a random order ID
+        function generateOrderID() {
+            const characters = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+            let orderID = '';
+            for (let i = 0; i < 8; i++) {
+                orderID += characters.charAt(Math.floor(Math.random() * characters.length));
+            }
+            return orderID;
+        }
+
+        // Set the generated order ID as the value of the hidden input field
+        const orderNumberInput = document.getElementById('orderNumberInput');
+        orderNumberInput.value = generateOrderID();
+    });
+</script>
+
+
+<script>
+    function selectAddress(firstName, lastName, companyName, street, landmark, city, state, mobileNo, email) {
+        var addressHtml = `
+            <p>${firstName} ${lastName}, ${companyName}, ${street}, ${landmark}, ${city}, ${state}, ${mobileNo}, ${email}</p>
+        `;
+        document.getElementById('selectedAddress').innerHTML = addressHtml;
+    }
+</script>
+
+
+<script>
+    function displaySuccessMessage(message) {
+        const successMessageElement = document.getElementById('successMessage');
+        successMessageElement.textContent = message;
+        successMessageElement.style.display = 'block';
+    }
+
+    function addNewAddress() {
+        const formData = $('#addressForm').serialize(); 
+        $.ajax({
+            url: '/add-address',
+            type: 'POST',
+             data: formData,
+            success: function (response) {
+                // Handle the success response
+                // ... any other logic ...
+
+                // Display the success message
+                // displaySuccessMessage('Address saved successfully');
+                alert('Address saved successfully');
+            },
+            error: function (error) {
+                // Handle errors
+                alert('Failed to save address. Please try again.');
+            },
+        });
+    }
+
+</script>
+
+<script>
+    function updateAddress(addressId) {
+        // Get the updated values from the form fields
+        const updatedFirstName = document.getElementById(`firstName_${addressId}`).value;
+        const updatedLastName = document.getElementById(`lastName_${addressId}`).value;
+        const updatedCompanyName = document.getElementById(`companyName_${addressId}`).value;
+        const updatedStreet = document.getElementById(`street_${addressId}`).value;
+        const updatedLandmark = document.getElementById(`landmark_${addressId}`).value;
+        const updatedCity = document.getElementById(`city_${addressId}`).value;
+        const updatedState = document.getElementById(`state_${addressId}`).value;
+        const updatedPincode = document.getElementById(`pincode_${addressId}`).value;
+        const updatedMobileNo = document.getElementById(`mobileNo_${addressId}`).value;
+        const updatedEmail = document.getElementById(`email_${addressId}`).value;
+        // Add more fields as needed
+
+        // You can use AJAX here to send the updated data to the server
+        $.ajax({
+            url: `/update-address/${addressId}`,
+            type: 'POST',
+            data: {
+                firstName: updatedFirstName,
+                lastName: updatedLastName,
+                companyName: updatedCompanyName,
+                street: updatedStreet,
+                landmark: updatedLandmark,
+                city: updatedCity,
+                state: updatedState,
+                pincode: updatedPincode,
+                mobileNo: updatedMobileNo,
+                email: updatedEmail,
+                // Add more data fields here if needed
+            },
+            success: function (response) {
+                
+                $(`#editAddressModal_${addressId}`).modal('hide');
+                 location.reload()
+                // Reload the page or update the address on the page as needed
+                // You can add code here to update the address displayed on the page after successful update
+            },
+            error: function (error) {
+                // Handle the error response (optional)
+                alert('Failed to update address. Please try again.');
+            },
+        });
+    }
+</script>
+
+<script>
+    function deleteAddress(addressId) {
+        // Display the SweetAlert prompt for confirmation
+        Swal.fire({
+            title: 'Are you sure?',
+            text: 'You will not be able to recover this address!',
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Yes, delete it!'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user confirms, proceed with the deletion
+                $.ajax({
+                    url: `/delete-address/${addressId}`,
+                    type: 'DELETE',
+                    success: function (response) {
+                        // Handle the success response (optional)
+                        Swal.fire('Deleted!', 'The address has been deleted.', 'success');
+                        // Optionally, you can reload the page after successful deletion
+                        location.reload();
+                    },
+                    error: function (error) {
+                        // Handle the error response (optional)
+                        Swal.fire('Error!', 'Failed to delete the address. Please try again.', 'error');
+                    }
+                });
+            }
+        });
+    }
+</script>
+
+
+
+
+<%- include('../layouts/userFooter.ejs') %>

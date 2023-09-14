@@ -1,0 +1,155 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<style>
+  @media (min-width: 1025px) {
+    .h-custom {
+      height: 100vh !important;
+    }
+  }
+
+  .horizontal-timeline .items {
+    border-top: 2px solid #ddd;
+  }
+
+  .horizontal-timeline .items .items-list {
+    position: relative;
+    margin-right: 0;
+  }
+
+  .horizontal-timeline .items .items-list:before {
+    content: "";
+    position: absolute;
+    height: 8px;
+    width: 8px;
+    border-radius: 50%;
+    background-color: #ddd;
+    top: 0;
+    margin-top: -5px;
+  }
+
+  .horizontal-timeline .items .items-list {
+    padding-top: 15px;
+  }
+</style>
+
+<!-- my account wrapper start -->
+<div class="my-account-wrapper pt-120 pb-120">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- My Account Page Start -->
+        
+        <section class="h-100 h-custom d-flex justify-content-center align-items-center" style="background-color: #eee" >
+          <div class="container py-5 h-100">
+            <button class="btn btn-sm btn-secondary" onclick="exportToPDF()">
+        Download Invoice <i class="bi bi-filetype-pdf"></i>
+      </button>
+            <section class="justify-centent-center" id="invoice1">
+            <div
+              class="row d-flex justify-content-center align-items-center h-100"
+            >
+            
+              <div class="col-lg-8 col-xl-6">
+                <div
+                  class="card border-top border-bottom border-3"
+                  style="border-color: #f37a27 !important"
+                >
+                  <div class="card-body p-5" >
+                    <p class="lead fw-bold mb-5" style="color: #f37a27">
+                      JUST-READ -Purchase Reciept
+                    </p>
+
+                    <div class="row">
+                      <div class="col mb-3">
+                        <p class="small text-muted mb-1">Date</p>
+                        <p><%= order.createdAt.toLocaleDateString('en-US', { day:
+                      '2-digit' , month: 'long' , year: 'numeric' }) %></p>
+                      </div>
+                      <div class="col mb-3">
+                        <p class="small text-muted mb-1">Order No.</p>
+                        <p><%=order.orderNumber%></p>
+                      </div>
+                    </div>
+
+                    <div class="row">
+                      <div class="col mb-3">
+                        <p class="small text-muted mb-1">Contact Info</p>
+                        <p><%=order.shippingAddress.mobileNo%>,<%=order.shippingAddress.email%></p>
+                      </div>
+                    
+                    </div>
+
+                    <div class="row">
+                      <div class="col mb-3">
+                        <p class="small text-muted mb-1">Shipping Address</p>
+                        <p><%=order.shippingAddress.firstName%><%=order.shippingAddress.lastName%>,<%=order.shippingAddress.companyName%>,
+                        <%=order.shippingAddress.street%>,<%=order.shippingAddress.landmark%>,<%=order.shippingAddress.city%>,
+                    <%=order.shippingAddress.state%>,<%=order.shippingAddress.pincode%></p>
+                      </div>
+            
+                    </div>
+                    </div>
+
+                    <div
+                      class="p-4"
+                      style="background-color: #f2f2f2"
+                    >
+                      <div class="row">
+                        <div class="col-md-8 col-lg-9">
+                          <p style="color: red;"><%=book.title%></p>
+                        </div>
+                        <div class="col-md-4 col-lg-3">
+                          <p style="font-weight: bold;color: red;">₹<%=Math.round(book.offerPrice)%></p>
+                        </div>
+                      </div>
+                      <div class="row">
+                        <div class="col-md-8 col-lg-9">
+                          <p class="mb-0">Quantity x  1</p>
+                        </div>
+                        <div class="col-md-4 col-lg-3">
+                          <p style="font-weight: bold;color: red;">₹<%=Math.round(book.offerPrice)%></p>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="row my-4">
+                      <div class="col-md-6  col-lg-6 offset-lg-4 d-flex">
+                        <p>  GRAND TOTAL: </p>
+                        <p class="lead fw-bold mb-0" style="color: #f37a27">
+                       ₹<%= Math.round(book.offerPrice) %>
+                        </p>
+                      </div>
+                    </div>
+
+                   
+                    
+                  </div>
+                </div>
+              </div>
+              
+            </div>
+            </section>
+          </div>
+        </section>
+      </div>
+    </div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+    <script>
+  function exportToPDF() {
+    const element = document.getElementById("invoice1");
+    element.style.width = "100%";
+    element.style.height = "900px";
+    let opt = {
+      margin: 10,
+      filename: "Invoice.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "mm", orientation: "landscape" },
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+    <%- include('../layouts/userFooter.ejs') %>
+  </div>
+</div>

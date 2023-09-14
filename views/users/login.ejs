@@ -1,121 +1,73 @@
-<%- include('../layouts/header.ejs') %>
+<%- include('../layouts/userHeader.ejs') %>
 
+<br><br>
+<br><br>
+<br><br>
 
-    <!-- Section: Design Block -->
-    <section class="background-radial-gradient overflow-hidden">
-        <style>
-            .background-radial-gradient {
-                background-color: hsl(218, 41%, 15%);
-                background-image: radial-gradient(650px circle at 0% 0%,
-                        hsl(218, 41%, 35%) 15%,
-                        hsl(218, 41%, 30%) 35%,
-                        hsl(218, 41%, 20%) 75%,
-                        hsl(218, 41%, 19%) 80%,
-                        transparent 100%),
-                    radial-gradient(1250px circle at 100% 100%,
-                        hsl(218, 41%, 45%) 15%,
-                        hsl(218, 41%, 30%) 35%,
-                        hsl(218, 41%, 20%) 75%,
-                        hsl(218, 41%, 19%) 80%,
-                        transparent 100%);
-            }
+<div class="login-register-area pt-20 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a class="active" data-toggle="tab" href="#lg1">
+                            <h4> login </h4>
+                        </a>
+                        <a data="tab" href="/register">
+                            <h4> sign up </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <form action="/login" method="post">
+                                        <input type="email" name="email" placeholder="Email" required>
+                                        <input type="password" name="password" placeholder="Password" id="pw" required> <br>
 
-            #radius-shape-1 {
-                height: 220px;
-                width: 220px;
-                top: -60px;
-                left: -130px;
-                background: radial-gradient(#44006b, #ad1fff);
-                overflow: hidden;
-            }
+                                        <input type="checkbox" id="showPasswordCheckbox">Show Password
 
-            #radius-shape-2 {
-                border-radius: 38% 62% 63% 37% / 70% 33% 67% 30%;
-                bottom: -60px;
-                right: -110px;
-                width: 300px;
-                height: 300px;
-                background: radial-gradient(#44006b, #ad1fff);
-                overflow: hidden;
-            }
-
-            .bg-glass {
-                background-color: hsla(0, 0%, 100%, 0.9) !important;
-                backdrop-filter: saturate(200%) blur(25px);
-            }
-        </style>
-
-        <div class="container px-4 py-5 px-md-5 text-center text-lg-start my-5">
-            <div class="row gx-lg-5 align-items-center mb-5 justify-content-center">
-
-                <div class="col-lg-6 mb-5 mb-lg-0 position-relative">
-                    <div id="radius-shape-1" class="position-absolute rounded-circle shadow-5-strong"></div>
-                    <div id="radius-shape-2" class="position-absolute shadow-5-strong"></div>
-
-                    <div class="card bg-glass">
-                        <div class="card-body px-4 py-5 px-md-5">
-                            <form action="/login" method="post">
-                            <h2 class="text-center">USER LOGIN</h2>
-                                <!-- Email input -->
-                                <div class="form-outline mb-4">
-                                    <input type="email" id="form3Example3" class="form-control" name="email" required
-                                        placeholder="Enter email" />
-                                    <label class="form-label" for="form3Example3">Email address</label>
-                                </div>
-
-                                <!-- Password input -->
-                                <div class="form-outline mb-4">
-                                    <input type="password" id="form3Example4" class="form-control" name="password"
-                                        required placeholder="Enter password" />
-                                    <label class="form-label" for="form3Example4">Password</label>
-                                </div>
-
-
-
-                                <!-- Submit button -->
-                                <button type="submit" class="btn btn-primary btn-block mb-4">
-                                    LOGIN
-                                </button>
-                                <br>
-                                
-                                <% if(typeof message !=='undefined' ){ %>
-
-                                    <p style="color: red;">
-                                        <%= message %>
-                                    </p>
-
-                                    <% } %>
-                                        <!-- Register buttons -->
-                                        <div class="text-center">
-                                        <a class="text-center" href="/register">SIGN UP</a>
-                                        <br>
-                                        <a class="text-center" href="/admin">ADMIN LOGIN</a>
+                                        
+                                        <div class="button-box">
+                                            <div class="login-toggle-btn">
+                                                <!-- {{!-- <input type="checkbox"> --}}
+                                                {{!-- <label>Remember me</label> --}} -->
+                                                <a href="/forgot-password">Forgot Password?</a> 
+                                                <!-- <a href="/otpLogin"
+                                                    class="text-danger font-weight-bold pr-3">OTP Login </a> -->
+                                            </div>
+                                            <button type="submit">Login</button>
                                         </div>
-                                        <div class="text-center">
-                                            
-                                            <button type="button" class="btn btn-link btn-floating mx-1">
-                                                <i class="fab fa-facebook-f"></i>
-                                            </button>
-
-                                            <button type="button" class="btn btn-link btn-floating mx-1">
-                                                <i class="fab fa-google"></i>
-                                            </button>
-
-                                            <button type="button" class="btn btn-link btn-floating mx-1">
-                                                <i class="fab fa-twitter"></i>
-                                            </button>
-
-                                            <button type="button" class="btn btn-link btn-floating mx-1">
-                                                <i class="fab fa-github"></i>
-                                            </button>
-                                        </div>
-                            </form>
+                                        <% if(typeof message !=='undefined' ){ %>
+                                        
+                                            <p style="color: red;">
+                                                <%= message %>
+                                            </p>
+                                        
+                                            <% } %>
+                                    </form>
+                                </div>
+                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
-    </section>
+    </div>
+</div>
 
+<script>
+    const showPasswordCheckbox = document.getElementById('showPasswordCheckbox');
+    const passwordInput = document.getElementById('pw');
 
-        <%- include('../layouts/footer.ejs')%>
+    showPasswordCheckbox.addEventListener('change', function () {
+        if (this.checked) {
+            passwordInput.type = 'text';
+        } else {
+            passwordInput.type = 'password';
+        }
+    });
+</script>
+
+<%- include('../layouts/userFooter.ejs') %>

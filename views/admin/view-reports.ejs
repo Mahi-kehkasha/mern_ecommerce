@@ -1,0 +1,134 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Books</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Data Management</li>
+        <li class="breadcrumb-item active">Reports</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="d-flex col-12">
+    <div class="d-flex col-8">
+      <form
+        action="/admin/generate-report"
+        method="GET"
+        id="generateReportForm"
+      >
+        <label for="fromDate">From Date</label>
+        <input class="datepicker" type="date" id="fromDate" name="fromDate" />
+        &nbsp;&nbsp;&nbsp;
+        <label for="toDate">To Date</label>
+        <input class="datepicker" type="date" id="toDate" name="toDate" />
+        &nbsp;&nbsp;&nbsp;
+        <button type="submit" class="btn btn-primary">Generate Report</button>
+      </form>
+    </div>
+
+    <div class="ps-10">
+      <button class="btn btn-sm btn-secondary" onclick="exportToPDF()">
+        Export to PDF <i class="bi bi-filetype-pdf"></i>
+      </button>
+
+      <button class="btn btn-sm btn-warning" onclick="exportToExcel()">
+        Export to Excel <i class="bi bi-file-earmark-excel"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="pdfContainer"></div>
+
+  <br />
+  <% if(reportData!==null) {%>
+  <section class="section" id="invoice">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <div id="table-container">
+              <table class="table table-hover" id="tbl_exporttable_to_xls">
+                <h3 class="text-center text-danger font-weight-bold">
+                  SALES REPORT
+                </h3>
+                <div class="d-flex">
+                  <h5 class="text-primary form-control datepicker">
+                    From : <%=fromDate%>
+                  </h5>
+                  &nbsp;&nbsp;&nbsp;
+                  <h5 class="text-primary form-control datepicker">
+                    To : <%=toDate%>
+                  </h5>
+                </div>
+                <thead>
+                  <tr>
+                    <th scope="col">SLNo</th>
+                    <th scope="col">Book Name</th>
+                    <th scope="col">Author Name</th>
+                    <th scope="col">Price</th>
+                    <th scope="col">Quantity</th>
+                    <th scope="col">Total Price</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% reportData[0].reportData.forEach((item, index) => { %>
+                  <tr>
+                    <td><%= index+1 %></td>
+                    <td><%= item.bookName %></td>
+                    <td><%= item.authorName %></td>
+                    <td><%= item.price %></td>
+                    <td><%= item.quantity %></td>
+                    <td><%= Math.floor(item.totalPrice) %></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br />
+</main>
+<script src="/js/exportToExcel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<script>
+  function exportToExcel() {
+    let table = new Table2Excel();
+    console.log(table);
+    table.export(document.querySelectorAll("table.table"));
+  }
+</script>
+
+<script>
+  function exportToPDF() {
+    const element = document.getElementById("invoice");
+    element.style.width = "100%";
+    element.style.height = "900px";
+    let opt = {
+      margin: 10,
+      filename: "JustRead.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "mm", orientation: "landscape" },
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+<%- include('../layouts/adminFooter.ejs')%> <% } else {%>
+<div
+  class="container vh-60 d-flex justify-content-center align-items-center"
+  style="text-align: center; padding: 100px"
+>
+  <h3>Please Choose a Starting & End date to Generate Report</h3>
+</div>
+
+<%}%>

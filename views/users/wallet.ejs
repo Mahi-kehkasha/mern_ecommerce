@@ -1,0 +1,49 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<!-- my account wrapper start -->
+<div class="my-account-wrapper pt-120 pb-120">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- My Account Page Start -->
+        <div class="myaccount-page-wrapper">
+          <div class="wallet-balance d-flex align-items-center">
+            <h4>Your Wallet Balance :</h4>
+            <h3 style="color: red">₹<%=user.walletBalance%></h3>
+          </div>
+          <br />
+          <div class="justify-content-center">
+            <h2 class="justify-content-center"><u>TRANSACTION DETAILS</u></h2>
+          </div>
+          <section class="vh-100">
+            <table class="table table-bordered">
+              <thead>
+                <tr>
+                  <th scope="col">SLNo.</th>
+                  <th scope="col">Date</th>
+                  <th scope="col">Type</th>
+                  <th scope="col">Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% transactions.forEach((transaction, index)=> { %>
+                <tr>
+                  <th scope="row"><%= index+1 %></th>
+                  <td>
+                    <%= transaction.timestamp.toLocaleDateString('en-US', { day:
+                    '2-digit' , month: 'long' , year: 'numeric' }) %>
+                  </td>
+                  <td><%=transaction.type%></td>
+                  <td>₹<%=transaction.amount%></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </section>
+        </div>
+      </div>
+    </div>
+
+    <%- include('../layouts/userFooter.ejs') %>
+  </div>
+</div>

@@ -1,0 +1,150 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>BANNERS</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Banner Management</li>
+        <li class="breadcrumb-item active">List Banners</li>
+      </ol>
+    </nav>
+    <a href="/admin/add-banner">
+      <button
+        style="
+          background-color: rgb(76, 215, 76);
+          border: none;
+          border-radius: 5px;
+          color: white;
+        "
+      >
+        ADD NEW BANNER +
+      </button>
+    </a>
+  </div>
+
+  <form action="">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-md-6">
+          <div class="input-group">
+            <input
+              type="text"
+              class="form-control"
+              placeholder="Search for Banners"
+              name="search"
+            />
+            <div class="input-group-append">
+              <button class="btn btn-primary" type="submit">
+                <i class="bi bi-search"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </form>
+  <br />
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">SLNo</th>
+                  <th scope="col">Title</th>
+                  <th scope="col">Subtitle</th>
+                  <th scope="col">Images</th>
+                  <th scope="col">Link URL</th>
+                  <th scope="col">Actions</th>
+                  <!-- Add Actions Column -->
+                </tr>
+              </thead>
+              <tbody>
+                <% banners.forEach((banner, index) => { %>
+                <tr>
+                  <th scope="row"><%= index + 1 %></th>
+                  <td><%= banner.title %></td>
+                  <td><%= banner.subtitle %></td>
+                  <td>
+                    <% banner.images.forEach((image, imageIndex) => { %>
+                    <a
+                      href="#"
+                      data-toggle="modal"
+                      data-target="#imageModal<%= imageIndex %>"
+                    >
+                      <img
+                        src="/images/product-imgs/<%= image %>"
+                        alt="Banner Image"
+                        style="max-width: 100px; max-height: 100px"
+                      />
+                    </a>
+                    <!-- Image Modal -->
+                    <div
+                      class="modal fade"
+                      id="imageModal<%= imageIndex %>"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="imageModalLabel<%= imageIndex %>"
+                      aria-hidden="true"
+                    >
+                      <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5
+                              class="modal-title"
+                              id="imageModalLabel<%= imageIndex %>"
+                            >
+                              Banner Image
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body text-center">
+                            <img
+                              src="/images/product-imgs/<%= image %>"
+                              alt="Banner Image"
+                              style="max-width: 100%; max-height: 80vh"
+                            />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <% }); %>
+                  </td>
+                  <td><%= banner.linkURL %></td>
+                  <td>
+                    <form
+                      method="post"
+                      action="/admin/delete-banner/<%= banner._id %>"
+                    >
+                      <button type="submit" class="btn btn-danger">
+                        Delete
+                      </button>
+                    </form>
+                  </td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br />
+</main>
+
+<%- include('../layouts/adminFooter.ejs') %>

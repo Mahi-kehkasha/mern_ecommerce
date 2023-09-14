@@ -1,0 +1,212 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>Edit Products</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item">Product Management</li>
+                    <li class="breadcrumb-item active">Add Products</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section">
+            <div class="row">
+
+
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <br>
+                            <form class="row g-3" method="post" enctype="multipart/form-data" action="/admin/edit-product/<%= product._id %>">
+                            <br><br><br>
+                                <div class="col-12">
+                                    <label for="inputNanme4" class="form-label">Title</label>
+                                    <input type="text" class="form-control" id="title" name="title" value="<%= product.title %>" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputEmail4" class="form-label">Author</label>
+                                    <input type="text" class="form-control" id="author" name="author" value="<%= product.author %>" required>
+                                </div>
+                                <div class="col-12">
+                                    <label class="form-label">Category</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="category">
+
+                                            <% categories.forEach(function(category) { %>
+                                                <option value="<%= category._id %>" <%=category._id.toString()===product.category.toString() ? 'selected' : '' %>>
+                                                    <%= category.name %>
+                                                </option>
+                                                <% }); %>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputAddress" class="form-label">Price</label>
+                                    <input type="text" class="form-control" id="price" name="price" value="<%= product.price %>" required>
+                                </div>
+<div class="col-12 d-flex">
+    <div class="col-5">
+        <label for="inputAddress" class="form-label">Discount in %</label>
+        <input type="number" class="form-control" id="discount" name="discount" value="<%= product.discount %>" min="0" max="50" required>
+        
+    </div>
+
+    <div class="col-5">
+        <label for="inputAddress" class="form-label">Offer Price</label>
+        <input type="text" class="form-control" id="offerPrice" name="offerPrice" value="<%= product.offerPrice %>" >
+    </div>
+</div>
+
+<span id="discountWarning" style="color: red; display: none;">
+    Sorry, you can enter a discount percentage between 0 and 50.
+</span>
+
+                                <div class="col-12">
+                                    <label for="inputNanme4" class="form-label">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description" value="<%= product.description %>"
+                                        required>
+                                </div>
+
+                                <div class="col-12">
+                                    <label class="form-label">Language</label>
+                                    <div class="col-sm-10">
+                                        <select class="form-select" name="language">
+                                            <option value="english" <%=product.language==='english' ? 'selected' : '' %>>English</option>
+                                            <option value="hindi" <%=product.language==='hindi' ? 'selected' : '' %>>Hindi</option>
+                                            <option value="malayalam" <%=product.language==='malayalam' ? 'selected' : '' %>>Malayalam</option>
+                                            <option value="tamil" <%=product.language==='tamil' ? 'selected' : '' %>>Tamil</option>
+                                            <option value="bengali" <%=product.language==='bengali' ? 'selected' : '' %>>Bengali</option>
+                                            <option value="telugu" <%=product.language==='telugu' ? 'selected' : '' %>>Telugu</option>
+                                            <option value="kannada" <%=product.language==='kannada' ? 'selected' : '' %>>Kannada</option>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="col-12">
+                                    <label for="inputNanme4" class="form-label">Stock</label>
+                                    <input type="number" class="form-control" id="stock" name="stock" value="<%= product.stock %>" required>
+                                </div>
+                                
+                                <div class="col-12">
+                                    <label for="inputNanme4" class="form-label">Choose Images</label>
+                                    <div class="col-sm-10">
+                                        <input class="form-control" type="file" id="images" name="images" multiple>
+                                        <% product.images.forEach(function(image, index) { %>
+                                            <div class="image-container">
+                                                <img src="/images/product-imgs/<%= image %>" alt="Product Image" height="100" width="100">
+                                                <button type="button" class="btn btn-danger btn-sm"
+                                                    onclick="removeImage('<%= product._id %>', <%= index %>)">Remove</button>
+                                            </div>
+                                            <% }); %>
+                                    </div>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="/admin/view-products" type="reset" class="btn btn-warning">Cancel</a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <% if(typeof message !=='undefined' ){ %>
+            <p style="color:green">
+                <%=message %>
+            </p>
+            <% } %>
+    </main>
+
+<script>
+    const discountInput = document.getElementById('discount');
+    const discountWarning = document.getElementById('discountWarning');
+
+    discountInput.addEventListener('input', function () {
+        const value = parseInt(this.value);
+        if (isNaN(value)) {
+            this.value = 0;
+            discountWarning.style.display = 'none';
+        } else {
+            const newValue = Math.min(50, Math.max(0, value));
+            this.value = newValue;
+            discountWarning.style.display = newValue === value ? 'none' : 'block';
+            if (newValue !== value) {
+                setTimeout(() => {
+                    discountWarning.style.display = 'none';
+                }, 3000); // Hide the warning after 3 seconds
+            }
+        }
+    });
+</script>
+
+
+<script>
+    const priceInput = document.getElementById('price');
+    const discountInput1 = document.getElementById('discount');
+    const offerPriceInput = document.getElementById('offerPrice');
+    const discountWarning1 = document.getElementById('discountWarning');
+
+    discountInput.addEventListener('input', function () {
+        const price = parseFloat(priceInput.value);
+        const discount = parseInt(this.value);
+
+        if (isNaN(discount)) {
+            this.value = 0;
+            discountWarning.style.display = 'none';
+            offerPriceInput.value = '';
+        } else {
+            const validDiscount = Math.min(50, Math.max(0, discount));
+            this.value = validDiscount;
+            discountWarning.style.display = validDiscount === discount ? 'none' : 'block';
+
+            if (validDiscount === 0) {
+                offerPriceInput.value = '';
+            } else {
+                const offerPrice = price - (price * (validDiscount / 100));
+                offerPriceInput.value = isNaN(offerPrice) ? '' : offerPrice.toFixed(2);
+            }
+        }
+    });
+</script>
+
+
+<script>
+    function removeImage(index) {
+        const imageContainer = document.querySelectorAll('.image-container')[index];
+        imageContainer.remove();
+    }
+</script>
+
+<script>
+    function removeImage(productId, imageIndex) {
+        console.log(productId, imageIndex,"ccccccccccccccccccccccccc");
+        $.ajax({
+            url: `/admin/remove-image/${productId}/${imageIndex}`,
+            type: 'POST',
+            success: function (response) {
+                if (response.success) {
+                    const imageContainer = document.querySelectorAll('.image-container')[imageIndex];
+                    imageContainer.remove();
+                } else {
+                    console.error(response.error);
+                }
+            },
+            error: function (error) {
+                console.error('Error removing image:', error);
+            }
+        });
+    }
+</script>
+
+
+
+    <%- include('../layouts/adminFooter.ejs')%>

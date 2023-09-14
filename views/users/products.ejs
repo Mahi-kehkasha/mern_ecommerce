@@ -1,0 +1,558 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<div class="shop-area pt-120 pb-120">
+  <div class="container">
+    <div class="row flex-row-reverse">
+      <div class="col-lg-9">
+        <div class="shop-topbar-wrapper">
+          <div class="shop-topbar-left">
+            <div class="view-mode nav">
+              <a class="active" href="#shop-1" data-toggle="tab"
+                ><i class="fa-solid fa-circle-chevron-left"></i
+              ></a>
+              <a href="#shop-2" data-toggle="tab"
+                ><i class="fa-solid fa-circle-chevron-right"></i
+              ></a>
+            </div>
+            <p>Showing 1 - 20 of 30 results</p>
+          </div>
+          <div class="product-sorting-wrapper">
+            <div class="product-shorting shorting-style">
+              <label>View :</label>
+              <select>
+                <option value="">20</option>
+                <option value="">23</option>
+                <option value="">30</option>
+              </select>
+            </div>
+            <div class="product-show shorting-style">
+              <label>Sort by :</label>
+              <select>
+                <option value="">Default</option>
+                <option value="">Name</option>
+                <option value="">price</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="shop-bottom-area">
+          <div class="tab-content jump">
+            <div id="shop-1" class="tab-pane active">
+              <div class="row">
+                <% if (books.length === 0) { %>
+                <div
+                  class="container vh-60 d-flex justify-content-center align-items-center"
+                  style="text-align: center; padding: 100px"
+                >
+                  <h3>No books available</h3>
+                </div>
+                <% } else { %> <% books.forEach((book) => { %>
+                <div class="col-xl-4 col-lg-4 col-md-6 col-sm-6 col-12">
+                  <div class="single-product-wrap mb-35">
+                    <div class="product-img product-img-zoom mb-15">
+                      <a href="/products/<%= book._id %>">
+                        <img
+                          src="/images/product-imgs/<%= book.images[0]%>"
+                          height="364"
+                          width="270"
+                          alt=""
+                        />
+                      </a>
+
+                      <div class="product-action-2 tooltip-style-2">
+                        <button
+                          title="Add to Wishlist"
+                          class="addToWishlistButton"
+                          data-bookid="<%= book._id %>"
+                          data-userId="<%= userId %>"
+                        >
+                          <i class="fa-solid fa-heart"></i>
+                        </button>
+                      </div>
+                    </div>
+                    <div class="product-content-wrap-2 text-center">
+                      <div class="product-rating-wrap">
+                        <div class="product-rating">
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star gray"></i>
+                        </div>
+                        <span>(2)</span>
+                      </div>
+                      <h3>
+                        <a href="product-details.html"><%= book.title %></a>
+                      </h3>
+                      <h5><%= book.author %></h5>
+                      <div class="product-price-2">
+                        <% if (book.offerPrice===null) { %>
+                        <span class="new-price"
+                          >₹<%= Math.floor(book.price) %></span
+                        >
+                        <% } else { %>
+                        <div class="d-flex justify-content-center">
+                          <span class="new-price"
+                            >₹<%= Math.floor(book.offerPrice) %></span
+                          >
+                          <span class="old-price"
+                            >₹<%= Math.floor(book.price) %></span
+                          >
+                        </div>
+                        <% } %>
+                      </div>
+                    </div>
+                    <div
+                      class="product-content-wrap-2 product-content-position text-center"
+                    >
+                      <div class="product-rating-wrap">
+                        <div class="product-rating">
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star gray"></i>
+                        </div>
+                        <span>(2)</span>
+                      </div>
+                      <h3>
+                        <a href="product-details.html"><%= book.title %></a>
+                      </h3>
+                      <div class="product-price-2">
+                        <% if (book.offerPrice===null) { %>
+                        <span class="new-price"
+                          >₹<%= Math.floor(book.price) %></span
+                        >
+                        <% } else { %>
+                        <div class="d-flex justify-content-center">
+                          <span class="new-price"
+                            >₹<%= Math.floor(book.offerPrice) %></span
+                          >
+                          <span class="old-price"
+                            >₹<%= Math.floor(book.price) %></span
+                          >
+                        </div>
+                        <% } %>
+                      </div>
+                      <div class="pro-add-to-cart">
+                        <% if (book.stock!==0) { %>
+                        <button
+                          class="addToCartButton"
+                          style="
+                            background-color: black;
+                            color: white;
+                            width: 120px;
+                            height: 40px;
+                          "
+                          data-bookId="<%= book._id %>"
+                          data-quantity="1"
+                          data-userId="<%= userId %>"
+                        >
+                          Add To Cart
+                        </button>
+                        <% } else { %>
+                        <a class="btn btn-danger">OUT OF STOCK</a>
+                        <% } %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <% }); %> <% } %>
+              </div>
+            </div>
+
+            <div id="shop-2" class="tab-pane">
+              <div class="shop-list-wrap mb-30">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6">
+                    <div class="product-list-img">
+                      <a href="product-details.html">
+                        <img
+                          src="assets/images/product/product-13.jpg"
+                          alt="Product Style"
+                        />
+                      </a>
+                      <div class="product-list-quickview">
+                        <button
+                          title="Quick View"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                        >
+                          <i class="icon-size-fullscreen icons"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-8 col-lg-7 col-md-6 col-sm-6">
+                    <div class="shop-list-content">
+                      <h3>
+                        <a href="product-details.html">Basic Joggin Shorts</a>
+                      </h3>
+                      <div class="pro-list-price">
+                        <span class="new-price">$35.45</span>
+                        <span class="old-price">$45.80</span>
+                      </div>
+                      <div class="product-list-rating-wrap">
+                        <div class="product-list-rating">
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star gray"></i>
+                          <i class="icon_star gray"></i>
+                        </div>
+                        <span>(3)</span>
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipic it, sed
+                        do eiusmod tempor labor incididunt ut et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip.
+                      </p>
+                      <div class="product-list-action">
+                        <button title="Add To Cart">
+                          <i class="icon-basket-loaded"></i>
+                        </button>
+                        <button title="Wishlist">
+                          <i class="icon-heart"></i>
+                        </button>
+                        <button title="Compare">
+                          <i class="icon-refresh"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <div class="shop-list-wrap mb-30">
+                <div class="row">
+                  <div class="col-xl-4 col-lg-5 col-md-6 col-sm-6">
+                    <div class="product-list-img">
+                      <a href="product-details.html">
+                        <img
+                          src="assets/images/product/product-17.jpg"
+                          alt="Product Style"
+                        />
+                      </a>
+                      <div class="product-list-quickview">
+                        <button
+                          title="Quick View"
+                          data-toggle="modal"
+                          data-target="#exampleModal"
+                        >
+                          <i class="icon-size-fullscreen icons"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-xl-8 col-lg-7 col-md-6 col-sm-6">
+                    <div class="shop-list-content">
+                      <h3>
+                        <a href="product-details.html">Vintage Socks X3</a>
+                      </h3>
+                      <div class="pro-list-price">
+                        <span class="new-price">$35.45</span>
+                        <span class="old-price">$45.80</span>
+                      </div>
+                      <div class="product-list-rating-wrap">
+                        <div class="product-list-rating">
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star"></i>
+                          <i class="icon_star gray"></i>
+                          <i class="icon_star gray"></i>
+                        </div>
+                        <span>(3)</span>
+                      </div>
+                      <p>
+                        Lorem ipsum dolor sit amet, consectetur adipic it, sed
+                        do eiusmod tempor labor incididunt ut et dolore magna
+                        aliqua. Ut enim ad minim veniam, quis nostrud
+                        exercitation ullamco laboris nisi ut aliquip.
+                      </p>
+                      <div class="product-list-action">
+                        <button title="Add To Cart">
+                          <i class="icon-basket-loaded"></i>
+                        </button>
+                        <button title="Wishlist">
+                          <i class="icon-heart"></i>
+                        </button>
+                        <button title="Compare">
+                          <i class="icon-refresh"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- <div class="pro-pagination-style text-center mt-10">
+            <ul>
+              <li>
+                <a class="prev" href="#"
+                  ><i class="fa-solid fa-circle-chevron-left"></i
+                ></a>
+              </li>
+              <li><a class="active" href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li>
+                <a class="next" href="#"
+                  ><i class="fa-solid fa-circle-chevron-right"></i
+                ></a>
+              </li>
+            </ul>
+          </div> -->
+          <div class="row justify-content-center">
+            <div class="col-12">
+              <nav>
+                <ul class="pagination justify-content-center">
+                  <li class="page-item">
+                    <a
+                      class="page-link prev"
+                      href="?page=<%= currentPage - 1 %>"
+                    >
+                      <i class="fa-solid fa-circle-chevron-left"></i>
+                    </a>
+                  </li>
+                  <% for (let j = 1; j <= totalPages; j++) { %>
+                  <li
+                    class="page-item <%= currentPage === j ? 'active' : '' %>"
+                  >
+                    <a class="page-link" href="?page=<%= j %>"> <%= j %> </a>
+                  </li>
+                  <% } %>
+                  <li class="page-item">
+                    <a
+                      class="page-link next"
+                      href="?page=<%= currentPage + 1 %>"
+                    >
+                      <i class="fa-solid fa-circle-chevron-right"></i>
+                    </a>
+                  </li>
+                </ul>
+              </nav>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="col-lg-3">
+        <div class="sidebar-wrapper sidebar-wrapper-mrg-right">
+          <div class="sidebar-widget mb-40">
+            <h4 class="sidebar-widget-title">Search</h4>
+            <div class="sidebar-search">
+              <form class="sidebar-search-form" action="">
+                <input type="text" placeholder="Search here..." name="search" />
+                <button type="submit">
+                  <i class="fa-solid fa-magnifying-glass"></i>
+                </button>
+              </form>
+            </div>
+          </div>
+          <div class="sidebar-widget shop-sidebar-border mb-35 pt-40">
+            <h4 class="sidebar-widget-title">Categories</h4>
+            <div class="shop-catigory">
+              <ul>
+                <% categories.forEach((category)=> { %>
+                <li>
+                  <a href="/search-by-category/<%=category._id%>"
+                    ><%=category.name%></a
+                  >
+                </li>
+                <% }); %>
+              </ul>
+            </div>
+          </div>
+
+          <!-- HTML for the Price Range Slider -->
+          <div class="container mt-4">
+            <h4>Filter by Price Range</h4>
+            <form action="/filter-books-by-price" method="GET">
+              <input
+                type="range"
+                class="form-range"
+                id="priceRange"
+                name="minPrice"
+                min="0"
+                max="5000"
+                value="50"
+                step="1"
+              />
+              <div class="d-flex justify-content-between">
+                <span>₹50</span>
+                <span>₹5000</span>
+              </div>
+              <div class="d-flex justify-content-between mt-2">
+                <span id="maxPriceLabel">Min: ₹50</span>
+                <span id="minPriceLabel">Max: ₹5000</span>
+              </div>
+              <button type="submit" class="btn btn-primary mt-3">Apply</button>
+            </form>
+          </div>
+
+          <!-- JavaScript -->
+          <script>
+            const priceRange = document.getElementById("priceRange");
+            const maxPriceLabel = document.getElementById("maxPriceLabel");
+            const minPriceLabel = document.getElementById("minPriceLabel");
+
+            priceRange.addEventListener("input", function () {
+              const maxValue = priceRange.min;
+              const minValue = priceRange.min;
+              const value = priceRange.value;
+
+              // Calculate the min and max prices based on the range input
+              const maxPrice = parseFloat(minValue) + parseFloat(value);
+              const minPrice = parseFloat(maxValue);
+
+              maxPriceLabel.textContent = `Min: ₹${minPrice.toFixed(2)}`;
+              minPriceLabel.textContent = `Max: ₹${maxPrice.toFixed(2)}`;
+            });
+
+            function filterByPrice() {
+              const selectedMaxPrice = parseFloat(
+                maxPriceLabel.textContent.replace("Max: ₹", "")
+              );
+              const selectedMinPrice = parseFloat(
+                minPriceLabel.textContent.replace("Min: ₹", "")
+              );
+
+              // You can use these selectedMinPrice and selectedMaxPrice values for filtering
+
+              // For demonstration, I'm logging the values to the console
+              console.log("Selected Max Price:", selectedMaxPrice);
+              console.log("Selected Min Price:", selectedMinPrice);
+            }
+          </script>
+
+          <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+            <h4 class="sidebar-widget-title">New Arrivals</h4>
+            <div class="sidebar-widget-list">
+              <ul>
+                <li>
+                  <div class="sidebar-widget-list-left">
+                    <input type="text" />
+                    <a href="/search?last30Days=true"
+                      >Last 30 days <span></span>
+                    </a>
+                    <!-- <span class="checkmark"></span> -->
+                  </div>
+                </li>
+                <li>
+                  <div class="sidebar-widget-list-left">
+                    <input type="checkbox" value="" />
+                    <a href="/search?last90Days=true"
+                      >Last 90 days <span></span
+                    ></a>
+                    <!-- <span class="checkmark"></span> -->
+                  </div>
+                </li>
+                <li>
+                  <div class="sidebar-widget-list-left">
+                    <input type="checkbox" value="" />
+                    <a href="/search?next90Days=true"
+                      >Next 90 days<span></span>
+                    </a>
+                    <!-- <span class="checkmark"></span> -->
+                  </div>
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="sidebar-widget shop-sidebar-border mb-40 pt-40">
+            <h4 class="sidebar-widget-title">Languages</h4>
+            <div class="sidebar-widget-list">
+              <ul>
+                <li>
+                  <a href="/search-by-lang?language=english">English </a>
+                  <a href="/search-by-lang?language=hindi">Hindi </a>
+                  <a href="/search-by-lang?language=malayalam">Malayalam </a>
+                  <a href="/search-by-lang?language=tamil">Tamil </a>
+                  <a href="/search-by-lang?language=bengali">Bengali </a>
+                  <a href="/search-by-lang?language=telungu">Telungu </a>
+                  <a href="/search-by-lang?language=kannada">Kannada </a>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  $(document).ready(function () {
+    // Use a class selector instead of an ID selector
+    $(".addToCartButton").on("click", function () {
+      const bookId = $(this).attr("data-bookId");
+      const quantity = $(this).attr("data-quantity");
+      const userId = $(this).attr("data-userId");
+
+      $.ajax({
+        url: "/add-to-cart",
+        type: "POST",
+        data: {
+          bookId: bookId,
+          quantity: quantity,
+          userId: userId,
+        },
+        success: function (response) {
+          // Handle the success response using SweetAlert2
+
+          Swal.fire({
+            position: "top-right",
+            icon: "success",
+            title: "Your Book is added to the cart",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        error: function (error) {
+          // Handle the error response using SweetAlert2
+          Swal.fire({
+            icon: "error",
+            title: "Error!",
+            text: "Failed to add item to cart. Please try again.",
+          });
+        },
+      });
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Attach a click event handler to the button with class addToWishlistButton
+    $(".addToWishlistButton").click(function () {
+      // Get the book ID from the data-bookid attribute
+      const bookId = $(this).data("bookid");
+      const userId = $(this).attr("data-userId");
+
+      // Send an AJAX request to add the book to the wishlist
+      $.ajax({
+        type: "POST", // Use POST or GET based on your route definition
+        url: "/add-to-wishlist", // Update with your actual route URL
+        data: { userId: userId, bookId: bookId }, // Include user ID here
+        dataType: "json",
+        success: function (response) {
+          // Handle success, you can update UI as needed
+          Swal.fire({
+            position: "top-right",
+            icon: "success",
+            title: "Your Book is Wishlisted",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        error: function (error) {
+          // Handle errors, display an error message if needed
+          console.error("Error adding to wishlist:", error);
+        },
+      });
+    });
+  });
+</script>
+
+<%- include('../layouts/userFooter.ejs') %>

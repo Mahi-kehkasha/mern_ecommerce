@@ -1,0 +1,195 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>ADD COUPON</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Coupon Management</li>
+        <li class="breadcrumb-item active">Add Coupon</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <br /><br />
+
+            <form class="row g-3" method="post">
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label">Coupon Code</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="couponCode"
+                  name="couponCode"
+                  required
+                />
+                <span id="couponCodeError" style="color: red"></span>
+              </div>
+
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label"
+                  >Discount Percentage</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="discountPercentage"
+                  name="discountPercentage"
+                  required
+                />
+                <span id="discountPercentageError" style="color: red"></span>
+              </div>
+
+              <div class="col-12 d-flex">
+                <div class="col-5">
+                  <label for="inputEmail4" class="form-label">valid From</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="validFrom"
+                    name="validFrom"
+                    required
+                  />
+                </div>
+                <div class="col-5">
+                  <label for="inputEmail4" class="form-label">valid To</label>
+                  <input
+                    type="date"
+                    class="form-control"
+                    id="validUntil"
+                    name="validUntil"
+                    required
+                  />
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label">Max Uses</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxUses"
+                  name="maxUses"
+                  required
+                />
+                <span id="maxUsesError" style="color: red"></span>
+              </div>
+
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label"
+                  >Max Discount Amount</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="maxDiscount"
+                  name="maxDiscount"
+                  required
+                />
+                <span id="maxDiscountError" style="color: red"></span>
+              </div>
+
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label"
+                  >minimum Purchase Amount</label
+                >
+                <input
+                  type="number"
+                  class="form-control"
+                  id="minPurchase"
+                  name="minPurchase"
+                  required
+                />
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a href="/admin/add-coupon" type="reset" class="btn btn-warning"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <% if(typeof message !=='undefined' ){ %>
+  <p style="color: green"><%=message %></p>
+  <% } %>
+</main>
+
+<script>
+  $(document).ready(function () {
+    // Coupon Code input validation
+    $("#couponCode").on("input", function () {
+      // Automatically capitalize the coupon name
+      const inputValue = $(this).val().toUpperCase();
+      $(this).val(inputValue); // Convert to uppercase regardless of length
+
+      // Validate the length of the coupon name
+      if (inputValue.length > 10) {
+        $(this).val(inputValue.substr(0, 10)); // Truncate to 10 characters
+        $("#couponCodeError").text(
+          "Coupon name should be less than or equal to 10 characters."
+        );
+      } else {
+        $("#couponCodeError").text("");
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Discount Percentage input validation
+    $("#discountPercentage").on("input", function () {
+      // Validate the discount percentage
+      if ($(this).val() > 60) {
+        $("#discountPercentageError").text("Max discount percentage is 60%.");
+        $(this).val(60); // Reset value to the maximum allowed
+      } else {
+        $("#discountPercentageError").text("");
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Max Discount Amount input validation
+    $("#maxDiscount").on("input", function () {
+      // Validate the max discount amount
+      if ($(this).val() > 2000) {
+        $("#maxDiscountError").text("Max discount amount cannot exceed ₹2000.");
+        $(this).val(2000); // Reset value to the maximum allowed
+      } else {
+        $("#maxDiscountError").text("");
+      }
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Max Uses input validation
+    $("#maxUses").on("input", function () {
+      // Validate max uses
+      if ($(this).val() > 10) {
+        $("#maxUsesError").text("Max uses cannot exceed 10.");
+        $(this).val(10); // Reset value to the maximum allowed
+      } else {
+        $("#maxUsesError").text("");
+      }
+    });
+  });
+</script>
+
+<%- include('../layouts/adminFooter.ejs')%>

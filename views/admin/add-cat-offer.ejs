@@ -1,0 +1,91 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>ADD CATEGORY</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Category Offer</li>
+        <li class="breadcrumb-item active">Add Category OFFER</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <br /><br />
+
+            <form class="row g-3" method="post" action="/admin/apply-category-offer">
+              <div class="col-12">
+                <label class="form-label">Category</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="category">
+                    <% categories.forEach(function(category) { %>
+                    <option value="<%=category._id%>">
+                      <%= category.name %>
+                    </option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label"
+                  >Discount Percentage</label
+                >
+                
+                <input
+                  type="number"
+                  class="form-control"
+                  id="discountPercentage"
+                  name="discountPercentage"
+                  required
+                />
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary"
+                  >Submit</>
+                </button>
+                <button type="reset" class="btn btn-warning">Cancel</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br>
+
+
+   <section>
+    <h3><u>Category Offers</u></h3>
+    <div class="row">
+      <% categoryOffers.forEach(function(categoryOffer) { %>
+        <div class="col-md-4 mb-3">
+          <div class="card">
+            <div class="card-body">
+              <h5 class="card-title"><%= categoryOffer.category %></h5>
+              <p class="card-text">
+                Discount Percentage: <%= categoryOffer.discountPercentage %>
+              </p>
+              <form method="post" action="/admin/remove-category-offer">
+                <input type="hidden" name="categoryId" value="<%= categoryOffer.catId %>">
+                <button type="submit" class="btn btn-danger">Remove</button>
+              </form>
+            </div>
+          </div>
+        </div>
+      <% }); %>
+    </div>
+  </section>
+
+  <% if(typeof message !=='undefined' ){ %>
+  <p style="color: green"><%=message %></p>
+  <% } %>
+</main>
+
+<%- include('../layouts/adminFooter.ejs')%>

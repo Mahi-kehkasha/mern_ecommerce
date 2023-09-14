@@ -1,87 +1,303 @@
-<%- include('../layouts/admin-layout/adminHeader.ejs') %>
+<%- include('../layouts/adminHeader.ejs') %>
 
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Dashboard</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+        <li class="breadcrumb-item active">Dashboard</li>
+      </ol>
+    </nav>
+  </div>
+  <!-- End Page Title -->
 
-    <br/>
+  <section class="section dashboard">
+    <div class="row">
+      <!-- Left side columns -->
+      <div class="col-lg-8">
+        <div class="row">
+          <!-- Sales Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card sales-card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
 
-    <form action="">
-        <!-- <input class=" w-25" type="text" placeholder="Search for name, email or mobile" name="search" >
-        <input class="btn btn-primary my-2 my-sm-0" type="submit" value="SEARCH"> -->
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
 
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-6">
-                    <div class="input-group">
-                        <input type="text" class="form-control" placeholder="Search for name, email, or mobile" name="search">
-                        <div class="input-group-append">
-                            <button class="btn btn-primary" type="submit">SEARCH</button>
-                        </div>
-                    </div>
+              <div class="card-body">
+                <h5 class="card-title">Sales <span>| Today</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-cart"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><%=salesCount%></h6>
+                    <span class="text-success small pt-1 fw-bold"
+                      ><%=increasePercentage%>%</span
+                    >
+                    <span class="text-muted small pt-2 ps-1">increase</span>
+                  </div>
                 </div>
+              </div>
             </div>
-        </div>
+          </div>
+          <!-- End Sales Card -->
 
-    </form>
+          <!-- Revenue Card -->
+          <div class="col-xxl-4 col-md-6">
+            <div class="card info-card revenue-card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
 
-    <br/><br/>
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
 
+              <div class="card-body">
+                <h5 class="card-title">Revenue <span>| This Month</span></h5>
 
-
-
-
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th scope="col">SLNo.</th>
-                <th scope="col">Name</th>
-                <th scope="col">Email</th>
-                <th scope="col">Mobile Number</th>
-                <th scope="col">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <% users.forEach((user,index)=> { %>
-                <tr>
-                    <td>
-                        <%= index+1 %>
-                    </td>
-                    <td>
-                        <%= user.name %>
-                    </td>
-                    <td>
-                        <%= user.email %>
-                    </td>
-                    <td>
-                        <%= user.mobile %>
-                    </td>
-                    <td>
-                        <a class="btn btn-warning my-2 my-sm-0" href="/admin/edit-user?id=<%= user.id %>">Edit</a>
-                        <a class="btn btn-danger my-2 my-sm-0" href="/admin/delete-user?id=<%= user.id %>">Delete</a>
-                    </td>
-                </tr>
-                <% }); %>
-        </tbody>
-    </table>
-
-    <br/>
-
-    <div class="container">
-        <div class="row justify-content-center">
-            <div class="col-12">
-                <nav>
-                    <ul class="pagination justify-content-center">
-                        <% for (let j=1; j <=totalPages; j++) { %>
-                            <li class="page-item">
-                                <a class="page-link" href="?page=<%= j %>">
-                                    <%= j %>
-                                </a>
-                            </li>
-                            <% } %>
-                    </ul>
-                </nav>
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-currency-rupee"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6>₹<%=monthlyRevenue%></h6>
+                    <span class="text-success small pt-1 fw-bold"
+                      ><%=monthlyIncreasePercentage%>%</span
+                    >
+                    <span class="text-muted small pt-2 ps-1">increase</span>
+                  </div>
+                </div>
+              </div>
             </div>
+          </div>
+          <!-- End Revenue Card -->
+
+          <!-- Customers Card -->
+          <div class="col-xxl-4 col-xl-12">
+            <div class="card info-card customers-card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Customers <span>| This Year</span></h5>
+
+                <div class="d-flex align-items-center">
+                  <div
+                    class="card-icon rounded-circle d-flex align-items-center justify-content-center"
+                  >
+                    <i class="bi bi-people"></i>
+                  </div>
+                  <div class="ps-3">
+                    <h6><%=userCount%></h6>
+                    <span>users till now</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!-- End Customers Card -->
+
+          <!-- Reports -->
+          <div class="col-12">
+            <div class="card">
+              <div class="filter">
+                <a class="icon" href="#" data-bs-toggle="dropdown"
+                  ><i class="bi bi-three-dots"></i
+                ></a>
+                <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+                  <li class="dropdown-header text-start">
+                    <h6>Filter</h6>
+                  </li>
+
+                  <li><a class="dropdown-item" href="#">Today</a></li>
+                  <li><a class="dropdown-item" href="#">This Month</a></li>
+                  <li><a class="dropdown-item" href="#">This Year</a></li>
+                </ul>
+              </div>
+
+              <div class="card-body">
+                <h5 class="card-title">Reports <span>/Today</span></h5>
+
+                <!-- Line Chart -->
+                <div id="reportsChart"></div>
+
+                <script>
+                  document.addEventListener("DOMContentLoaded", () => {
+                    new ApexCharts(document.querySelector("#reportsChart"), {
+                      series: [
+                        {
+                          name: "Sales",
+                          data: [31, 40, 28, 51, 42, 82, 56],
+                        },
+                        {
+                          name: "Revenue",
+                          data: [11, 32, 45, 32, 34, 52, 41],
+                        },
+                        {
+                          name: "Customers",
+                          data: [15, 11, 32, 18, 9, 24, 11],
+                        },
+                      ],
+                      chart: {
+                        height: 350,
+                        type: "area",
+                        toolbar: {
+                          show: false,
+                        },
+                      },
+                      markers: {
+                        size: 4,
+                      },
+                      colors: ["#4154f1", "#2eca6a", "#ff771d"],
+                      fill: {
+                        type: "gradient",
+                        gradient: {
+                          shadeIntensity: 1,
+                          opacityFrom: 0.3,
+                          opacityTo: 0.4,
+                          stops: [0, 90, 100],
+                        },
+                      },
+                      dataLabels: {
+                        enabled: false,
+                      },
+                      stroke: {
+                        curve: "smooth",
+                        width: 2,
+                      },
+                      xaxis: {
+                        type: "datetime",
+                        categories: [
+                          "2018-09-19T00:00:00.000Z",
+                          "2018-09-19T01:30:00.000Z",
+                          "2018-09-19T02:30:00.000Z",
+                          "2018-09-19T03:30:00.000Z",
+                          "2018-09-19T04:30:00.000Z",
+                          "2018-09-19T05:30:00.000Z",
+                          "2018-09-19T06:30:00.000Z",
+                        ],
+                      },
+                      tooltip: {
+                        x: {
+                          format: "dd/MM/yy HH:mm",
+                        },
+                      },
+                    }).render();
+                  });
+                </script>
+                <!-- End Line Chart -->
+              </div>
+            </div>
+          </div>
+          <!-- End Reports -->
         </div>
+      </div>
+      <div class="col-lg-4">
+        <!-- Website Traffic -->
+        <div class="card">
+          <div class="filter">
+            <a class="icon" href="#" data-bs-toggle="dropdown"
+              ><i class="bi bi-three-dots"></i
+            ></a>
+            <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
+              <li class="dropdown-header text-start">
+                <h6>Filter</h6>
+              </li>
+
+              <li><a class="dropdown-item" href="#">Today</a></li>
+              <li><a class="dropdown-item" href="#">This Month</a></li>
+              <li><a class="dropdown-item" href="#">This Year</a></li>
+            </ul>
+          </div>
+
+          <div class="card-body pb-0">
+            <h5 class="card-title">Website Traffic <span>| Today</span></h5>
+
+            <div
+              id="trafficChart"
+              style="min-height: 400px"
+              class="echart"
+            ></div>
+            <canvas id="doughnutChart" width="400" height="400"></canvas>
+
+            <script>
+              // Get the bookSaleData from your EJS template
+              const bookSaleData = <%= JSON.stringify(bookSalesData) %>;
+
+              // Extract labels and data for the chart
+              const labels = bookSaleData.map(item => item.bookName);
+              const data = bookSaleData.map(item => item.quantity);
+
+              // Get a reference to the canvas element
+              const ctx = document.getElementById('doughnutChart').getContext('2d');
+
+              // Create the doughnut chart
+              new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                  labels: labels,
+                  datasets: [{
+                    data: data,
+                    backgroundColor: [
+                      'rgba(255, 99, 132, 0.8)',
+                      'rgba(54, 162, 235, 0.8)',
+                      'rgba(255, 206, 86, 0.8)',
+                      'rgba(75, 192, 192, 0.8)',
+                      'rgba(153, 102, 255, 0.8)',
+                      'rgba(255, 159, 64, 0.8)',
+                      // Add more colors as needed
+                    ],
+                  }],
+                },
+                options: {
+                  responsive: true,
+                  maintainAspectRatio: false,
+                },
+              });
+            </script>
+          </div>
+        </div>
+        <!-- end website traffic -->
+      </div>
     </div>
+  </section>
+</main>
 
-
-
-    <%- include('../layouts/admin-layout/adminFooter.ejs')%>
+<%- include('../layouts/adminFooter.ejs')%>

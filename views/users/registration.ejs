@@ -1,82 +1,82 @@
-<%- include('../layouts/header.ejs') %>
+<%- include('../layouts/userHeader.ejs') %>
 
-<section class="vh-100" style="background-color: #eee;">
-    <div class="container h-100">
-        <div class="row d-flex justify-content-center align-items-center h-100">
-            <div class="col-lg-12 col-xl-11">
-                <div class="card text-black" style="border-radius: 25px;">
-                    <div class="card-body p-md-5">
-                        <div class="row justify-content-center">
-                            <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
+<br><br>
+<br><br>
+<br><br>
+<div class="login-register-area pt-20 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a data="tab" href="/login">
+                            <h4> login </h4>
+                        </a>
+                        <a class="active" data-toggle="tab" href="#">
+                            <h4> sign up </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <p style="color: red;" id="message-container"></p>
+                                    <% if(typeof message !=='undefined' ){ %>
+                                        <p style="color:green">
+                                            <%=message %>
+                                        </p>
+                                        <% } %>
+                                    <form method="post" id="Form" name="myForm">
 
-                                <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4">REGISTER</p>
+                                        <span class="formerror text-danger" id="name-info"></span>
+                                        <input type="text" name="name" placeholder="Name" id="username"
+                                            onkeyup="validateName()" required/>
+                                        
 
-                                <form class="mx-1 mx-md-4" method="post" id="Form" name="myForm">
-
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                        <div class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="form3Example1c">Your Name</label>
-                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="text" id="username" class="form-control" name="name"  onkeyup="validateName()"/>
-                                            <b><span class="formerror text-danger" id="name-info"></span></b>
+                                    <span class="formerror text-danger" id="email-info"></span>
+                                        <input name="email" placeholder="E-mail" type="email" id="email"
+                                            onkeyup=" validateEmail()" required/>
+                                        
+                                        <span class="formerror text-danger" id="mobileNo-info"></span>
+                                        <div>
+                                        <input style="width: 400px;" type="text" name="mno" placeholder="Mobile Number" id="mobileNo" onkeyup=" validateMobileNo()" required />
+                                        <button class="" style="height: 50px;width: 100px;border: none; background-color: rgb(24, 88, 207);color: white;"
+                                            type="button" onclick="sendOTP()">Send OTP</button>
                                         </div>
-                                    </div>
+                                        
+<span class="formerror text-danger" id="otp-info"></span>
+<div>
+    <input style="width: 400px;" type="text" name="otp" placeholder="Enter OTP" id="otp" required />
+    <button class="" style="height: 50px;width: 100px;border: none; background-color: rgb(24, 88, 207);color: white;"
+        type="button" onclick="verifyOTP()">Verify OTP</button>
+</div>
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                        <div class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="form3Example3c">Your Email</label>
-                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="email" id="email" class="form-control" name="email"  onkeyup="validateEmail()"/> 
-                                            <b><span class="formerror text-danger" id="email-info"></span></b>
+                                        <span class="formerror text-danger" id="password-info"></span>
+                                        <input type="password" name="password" placeholder="Password" id="password"
+                                            onkeyup="validatePassword()" required/>
+                                        
+
+                                         
+                                        <div class="button-box">
+                                            <button onclick="validateForm()" type="submit">Register</button>
+                                            <span class="formerror text-danger" id="submit-info"></span>
+
                                         </div>
-                                    </div>
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-phone fa-lg me-3 fa-fw"></i>
-                                        <div class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="form3Example4c">Mobile</label>
-                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="text" id="mobileNo" class="form-control" name="mno"  onkeyup="validateMobileNo()"/>
-                                            <b><span class="formerror text-danger" id="mobileNo-info"></span></b>
-                                        </div>
-                                    </div>
+                                        
 
-                                    <div class="d-flex flex-row align-items-center mb-4">
-                                        <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                        <div class="form-outline flex-fill mb-0">
-                                            <label class="form-label" for="form3Example4cd">Password</label>
-                                            <input style="background-color: rgba(240, 248, 255, 0.779);" type="password" id="password" class="form-control" name="password" onkeyup="validatePassword()"/>   
-                                            <b><span class="formerror text-danger" id="password-info"></span></b>
-                                        </div>
-                                    </div>
-
-                                    <span class="formerror text-danger" id="submit-info"> </span>
-                                    <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                        <button type="submit" class="btn btn-primary btn-lg mx-3" onclick="validateForm()">Register</button>
-                                        <a href="/login" class="btn btn-success btn-lg">Login</a>
-                                    </div>
-
-
-                                </form>
-                                <% if(typeof message !=='undefined' ){ %>
-                                    <p style="color:green">
-                                        <%=message %>
-                                    </p>
-                                    <% } %>
-
+                                    </form>
+                                </div>
                             </div>
-                            <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
 
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp"
-                                    class="img-fluid" alt="Sample image">
-
-                            </div>
                         </div>
+
                     </div>
                 </div>
             </div>
         </div>
     </div>
-</section>
+</div>
 
 
 <script>
@@ -198,5 +198,127 @@
 
 </script>
 
+<!-- otp verification -->
+<!-- <script>
+    // Function to send OTP
+    function sendOTP() {
+        const mobileNo = document.getElementById('mobileNo').value;
 
-<% include('../layouts/footer.ejs') %>
+        // Send an AJAX request to your server to send the OTP
+        fetch('/send-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mobileNo: mobileNo })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.success) {
+                    // OTP sent successfully, show success message or handle as needed
+                    alert('OTP sent successfully');
+                } else {
+                    // OTP sending failed, show error message or handle as needed
+                    alert('Failed to send OTP');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending OTP:', error);
+            });
+    }
+
+    // Function to verify OTP
+    function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+
+        // Send an AJAX request to your server to verify the OTP
+        fetch('/verify-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp: otp })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.success) {
+                    // OTP verification successful, show success message or handle as needed
+                    alert('OTP verification successful');
+                } else {
+                    // OTP verification failed, show error message or handle as needed
+                    alert('OTP verification failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error verifying OTP:', error);
+            });
+    }
+</script> -->
+
+<!-- registration.ejs -->
+<script>
+    // Function to send OTP
+    function sendOTP() {
+        const mobileNo = document.getElementById('mobileNo').value;
+
+        // Send an AJAX request to your server to send the OTP
+        fetch('/send-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mobileNo: mobileNo })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                const messageContainer = document.getElementById('message-container');
+                if (data.success) {
+                    // OTP sent successfully, show success message
+                    messageContainer.innerText = 'OTP sent successfully';
+                } else {
+                    // OTP sending failed, show error message
+                    messageContainer.innerText = 'Failed to send OTP';
+                }
+            })
+            .catch(error => {
+                console.error('Error sending OTP:', error);
+            });
+    }
+
+    // Function to verify OTP
+    function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+
+        // Send an AJAX request to your server to verify the OTP
+        fetch('/verify-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp: otp })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                const messageContainer = document.getElementById('message-container');
+                if (data.success) {
+                    // OTP verification successful, show success message
+                    messageContainer.innerText = 'OTP verification successful';
+                } else {
+                    // OTP verification failed, show error message
+                    messageContainer.innerText = 'OTP verification failed';
+                }
+            })
+            .catch(error => {
+                console.error('Error verifying OTP:', error);
+            });
+    }
+</script>
+
+
+
+
+<% include('../layouts/userFooter.ejs') %>
