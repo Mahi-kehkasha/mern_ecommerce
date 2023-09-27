@@ -1,3 +1,4 @@
+require("dotenv").config();
 const User = require("../models/userModel");
 const Book = require("../models/bookModel");
 const Category = require("../models/categoryModel");
@@ -9,9 +10,10 @@ const Transaction = require("../models/transactionModel");
 const Banner = require("../models/bannerModel");
 const Wishlist = require("../models/wishlistModel");
 
-const accountSid = "ACb27968e40b0aeb18fcfbf2196c3d3402";
-const authToken = "7fff2fc8493c1583ffee8051e89f8835";
-const verifySid = "VA3190668a75939b921b971c0e7d239c91";
+const accountSid = process.env.ACCOUNT_SID;
+const authToken = process.env.AUTH_TOKEN;
+const verifySid = process.env.VERIFY_SID;
+console.log(process.env.AUTH_TOKEN, "-----", process.env.VERIFY_SID);
 const client = require("twilio")(accountSid, authToken);
 
 const bcrypt = require("bcrypt");
@@ -22,18 +24,16 @@ const {
 const Razorpay = require("razorpay");
 
 const razorpay = new Razorpay({
-  key_id: "rzp_test_ayOgq7chuv4Aeq",
-  key_secret: "i7GEYFabFT2STp8GOaG2fnX2",
+  key_id: process.env.RAZORPAY_KEY_ID,
+  key_secret: process.env.RAZORPAY_KEY_SECRET,
 });
 
 const paypal = require("paypal-rest-sdk");
 
 paypal.configure({
   mode: "sandbox", // 'sandbox' or 'live'
-  client_id:
-    "AYvyImhfAzZHTVlLcaHFD7qciVDHaRQRQa2rbu1bwJ78m3xsIu32lkQk-PWxEXzTxZG8wpMg9-IlwgPn",
-  client_secret:
-    "EADgaiI7rkErU6o-_vlFU-i-jYrXdnWD8X_zVNhQLZa7wKeo4qtp7YIbUb2pyuJnNQT-sS3cFjfTwrBP",
+  client_id: process.env.PAYPAL_CLIENT_ID,
+  client_secret: process.env.PAYPAL_CLIENT_SECRET,
 });
 
 const securePassword = async (password) => {
@@ -1423,7 +1423,7 @@ const verifyRazorpayPayment = async (req, res) => {
     const signatureData = razorpay_order_id + "|" + razorpay_payment_id;
 
     const crypto = require("crypto");
-    const hmac = crypto.createHmac("sha256", "i7GEYFabFT2STp8GOaG2fnX2");
+    const hmac = crypto.createHmac("sha256", process.env.RAZORPAY_KEY_SECRET);
     hmac.update(signatureData);
     const generatedSignature = hmac.digest("hex");
 
