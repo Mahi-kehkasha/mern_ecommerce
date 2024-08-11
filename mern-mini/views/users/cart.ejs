@@ -1,0 +1,494 @@
+<%- include('../layouts/userHeader.ejs') %> <% if (cart.length> 0) { %>
+
+<div class="cart-main-area pt-115 pb-120">
+  <div class="container">
+    <div
+      class="grand-totall"
+      style="margin: 0; padding: 20px; display: flex; align-items: center"
+    >
+      <div style="width: 100%; display: flex; align-items: center">
+        <!-- <h4 style="flex: 1; margin: 0;" class="grand-totall-title">Cart Total <span id="grandTotalPrice">
+                    ₹<%= totalPrice %></span></h4> -->
+        <% if(couponApplied) { %>
+
+        <h4 style="flex: 1; margin: 0" class="grand-totall-title">
+          Grand Total
+          <span id="grandTotalPrice">₹<%= Math.floor(couponPrice)%></span>
+        </h4>
+        <h5 style="color: blueviolet; margin: 5px">COUPON APPLIED</h5>
+
+        <% } else { %>
+
+        <h4 style="flex: 1; margin: 0" class="grand-totall-title">
+          Grand Total
+          <span id="grandTotalPrice">₹<%= Math.floor(totalPrice)%></span>
+        </h4>
+        <% } %>
+        <a style="margin-left: 20px" href="/proceed-to-checkout"
+          >Proceed to Checkout</a
+        >
+      </div>
+    </div>
+
+    <br />
+    <h3 class="cart-page-title">Your cart items</h3>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <form action="#">
+          <div class="table-content table-responsive cart-table-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Unit Price</th>
+                  <th>Qty</th>
+                  <th>Subtotal</th>
+                  <th>Options</th>
+                </tr>
+              </thead>
+              <% cart.forEach((item)=> { %>
+              <tbody>
+                <tr>
+                  <td class="product-thumbnail">
+                    <a href="#"
+                      ><img
+                        style="width: 98px; height: 112px"
+                        src="/images/product-imgs/<%= item.bookId.images[0] %>"
+                        alt=""
+                    /></a>
+                  </td>
+                  <td class="product-name">
+                    <a href="#"> <%= item.bookId.title %> </a>
+                    <% if (item.quantity> 1) { %>
+                    <span
+                      class="item-count"
+                      data-bookId="<%= item.bookId._id %>"
+                      >(x<%= item.quantity %>)</span
+                    >
+                    <% } %>
+                  </td>
+
+                  <% if(item.bookId.offerPrice){ %>
+
+                  <td class="">
+                    <span class="amount text-danger"
+                      >₹<%= item.bookId.offerPrice %></span
+                    ><br />
+                    <strike
+                      ><span class="amount"
+                        >₹<%= item.bookId.price %></span
+                      ></strike
+                    >
+                  </td>
+
+                  <% } else { %>
+                  <td class="product-price-cart">
+                    <span class="amount">₹<%= item.bookId.price %></span>
+                  </td>
+                  <% } %> <% console.log(item.bookId.stock, "kkkkkkkkkkkkkk")%>
+                  <td style="display: none">
+                    <input
+                      type="text"
+                      value="<%=item.bookId.stock%>"
+                      id="maxstock"
+                      hidden
+                    />
+                  </td>
+
+                  <td class="product-quantity pro-details-quality">
+                    <div>
+                      <button
+                        type="button"
+                        class="quantity-btn"
+                        data-bookId="<%= item.bookId._id %>"
+                        data-stock="<%= item.bookId.stock%>"
+                        data-quantity="<%= item.quantity %>"
+                        onclick="decreaseQuantity(this)"
+                      >
+                        -
+                      </button>
+                      <input
+                        class="cart-plus-minus-box"
+                        style="width: 30px; height: 30px"
+                        type="text"
+                        name="qtybutton"
+                        value="<%= item.quantity %>"
+                        readonly
+                      />
+                      <button
+                        type="button"
+                        class="quantity-btn"
+                        data-bookId="<%= item.bookId._id %>"
+                        data-stock="<%= item.bookId.stock%>"
+                        data-quantity="<%= item.quantity %>"
+                        onclick="increaseQuantity(this)"
+                      >
+                        +
+                      </button>
+                    </div>
+                  </td>
+
+                  <td
+                    class="product-subtotal"
+                    data-bookId="<%= item.bookId._id %>"
+                  >
+                    ₹<%= item.price %>
+                  </td>
+
+                  <td class="product-remove">
+                    <a
+                      style="color: red"
+                      onclick="showConfirmation('<%= item._id %>')"
+                      ><i class="fa-solid fa-trash"></i
+                    ></a>
+                  </td>
+                </tr>
+              </tbody>
+              <% }); %>
+            </table>
+          </div>
+          <div class="row">
+            <div class="col-lg-12">
+              <div class="cart-shiping-update-wrapper">
+                <div class="cart-shiping-update">
+                  <a
+                    style="background-color: rgb(96, 200, 204)"
+                    href="/products"
+                    >Continue Shopping</a
+                  >
+                </div>
+                <!-- <div class="cart-clear">
+                                    <button>Update Cart</button>
+                                    <a href="#">Clear Cart</a>
+                                </div> -->
+              </div>
+            </div>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-lg-4 col-md-6">
+            <div class="discount-code-wrapper">
+              <div class="title-wrap">
+                <h4 class="cart-bottom-title section-bg-gray">
+                  Use Coupon Code
+                </h4>
+              </div>
+              <div class="discount-code">
+                <p>Enter your coupon code if you have one.</p>
+                <form id="couponForm">
+                  <% if (couponApplied) { %>
+                  <input
+                    type="text"
+                    name="name"
+                    value="<%= couponName %>"
+                    id="couponCode"
+                  />
+                  <a href="#" class="cart-btn-2 text-danger" id="removeCoupon"
+                    >Remove Coupon</a
+                  >
+
+                  <% } else { %>
+                  <input type="text" required="" name="name" id="couponCode" />
+                  <button class="cart-btn-2" type="submit">Apply Coupon</button>
+                  <% } %>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-12">
+            <div class="grand-totall">
+              <div class="title-wrap">
+                <h4 class="cart-bottom-title section-bg-gary-cart">
+                  Cart Total
+                </h4>
+              </div>
+              <h5>
+                Total Price
+                <span id="realPrice"><strike>₹<%= realPrice%></strike></span>
+              </h5>
+              <h5>
+                Offer Price
+                <span id="totalProductsPrice" class="text-success"
+                  >₹<%= totalPrice%></span
+                >
+              </h5>
+              <p id="saved" class="text-success">You saved ₹<%=saved%></p>
+              <div class="total-shipping">
+                <h5>Total shipping</h5>
+                <ul>
+                  <li>
+                    <input type="checkbox" /> Standard <span>₹20.00</span>
+                  </li>
+                  <li><input type="checkbox" /> Express <span>₹30.00</span></li>
+                </ul>
+              </div>
+              <% if(couponApplied) { %>
+              <h5 style="color: blueviolet">COUPON APPLIED</h5>
+              <h4 class="grand-totall-title">
+                Grand Total
+                <span id="grandTotalPrice1">₹<%= couponPrice%></span>
+              </h4>
+              <% } else { %>
+
+              <h4 class="grand-totall-title">
+                Grand Total <span id="grandTotalPrice1">₹<%= totalPrice%></span>
+              </h4>
+              <% } %>
+              <a href="/proceed-to-checkout">Proceed to Checkout</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  function increaseQuantity(btn) {
+    const quantityInput = btn.parentNode.querySelector(".cart-plus-minus-box");
+    const currentQuantity = parseInt(quantityInput.value);
+
+    const stockInput = btn.closest("tr").querySelector("#maxstock");
+    const stock = parseInt(stockInput.value);
+
+    if (currentQuantity < stock) {
+      quantityInput.value = currentQuantity + 1;
+
+      // Get the corresponding td element for the current row
+      const tdElement = btn.closest("tr").querySelector(".product-subtotal");
+      const bookId = tdElement.getAttribute("data-bookId");
+      const itemCountElement = btn.closest("tr").querySelector(".item-count");
+
+      console.log(stock, "maxxxx");
+
+      updateQuantityInCart(
+        bookId,
+        currentQuantity + 1,
+        tdElement,
+        itemCountElement
+      );
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: "Out of Stock",
+        text: "Sorry, this item is out of stock.",
+      });
+    }
+  }
+
+  function decreaseQuantity(btn) {
+    const quantityInput = btn.parentNode.querySelector(".cart-plus-minus-box");
+    const currentQuantity = parseInt(quantityInput.value);
+
+    // Decrease quantity only if it's greater than 1
+    if (currentQuantity > 1) {
+      quantityInput.value = currentQuantity - 1;
+
+      // Get the corresponding td element for the current row
+      const tdElement = btn.closest("tr").querySelector(".product-subtotal");
+      const bookId = tdElement.getAttribute("data-bookId");
+      const itemCountElement = btn.closest("tr").querySelector(".item-count");
+
+      updateQuantityInCart(
+        bookId,
+        currentQuantity - 1,
+        tdElement,
+        itemCountElement
+      );
+    }
+  }
+
+  function updateQuantityInCart(bookId, newQuantity, td, itemCountElement) {
+    $.ajax({
+      url: "/update-cart-quantity",
+      type: "POST",
+      data: {
+        bookId: bookId,
+        quantity: newQuantity,
+      },
+      success: function (response) {
+        const newPrice = response.newPrice;
+        td.textContent = `₹${newPrice}`;
+
+        const totalPrice = response.totalPrice;
+
+        const realPrice = response.realPrice;
+
+        const saved = response.saved;
+
+        if (newQuantity > 1) {
+          itemCountElement.textContent = `(x${newQuantity})`;
+        } else {
+          itemCountElement.textContent = ""; // Hide the item count if quantity is 1
+        }
+
+        const totalProductsPriceElement =
+          document.getElementById("totalProductsPrice");
+        totalProductsPriceElement.textContent = `₹${totalPrice}`;
+
+        const grandTotalPriceElement =
+          document.getElementById("grandTotalPrice");
+        grandTotalPriceElement.textContent = `₹${totalPrice}`;
+
+        const grandTotalPriceElement1 =
+          document.getElementById("grandTotalPrice1");
+        grandTotalPriceElement1.textContent = `₹${totalPrice}`;
+
+        const realPriceElement = document.getElementById("realPrice");
+        realPriceElement.textContent = `₹${realPrice}`;
+
+        const savedElement = document.getElementById("saved");
+        savedElement.textContent = `You have saved ₹${saved}`;
+
+        // For example, you can update the total price in the view
+        const totalPriceElement = document.querySelector(".cart-total h3");
+        totalPriceElement.textContent = `Total Price: ₹${response.totalPrice}`;
+      },
+      error: function (error) {
+        alert("Failed to update cart quantity. Please try again.");
+      },
+    });
+  }
+</script>
+
+<script>
+  function showConfirmation(cartItemId) {
+    Swal.fire({
+      title: "Are you sure?",
+      text: "You are about to delete this item from your cart.",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#d33",
+      cancelButtonColor: "#3085d6",
+      confirmButtonText: "Yes, delete it!",
+      cancelButtonText: "Cancel",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        deleteItem(cartItemId);
+      }
+    });
+  }
+
+  function deleteItem(cartItemId) {
+    $.ajax({
+      url: "/delete-item",
+      type: "POST",
+      data: {
+        cartItemId: cartItemId,
+      },
+      success: function (response) {
+        // Handle the success response (optional)
+        Swal.fire({
+          icon: "success",
+          title: "Item deleted successfully!",
+          showConfirmButton: false,
+          timer: 1500,
+        }).then(() => {
+          // After the success message, reload the page or perform any other action
+          location.reload();
+        });
+      },
+      error: function (error) {
+        // Handle the error response (optional)
+        Swal.fire({
+          icon: "error",
+          title: "Failed to delete item. Please try again.",
+          showConfirmButton: false,
+          timer: 1500,
+        });
+      },
+    });
+  }
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#couponForm").submit(function (event) {
+      event.preventDefault(); // Prevent the form from submitting normally
+
+      // Get the coupon code from the input field
+      const couponCode = $("#couponCode").val();
+
+      // Create an object with the data to send
+      const dataToSend = {
+        couponCode: couponCode,
+      };
+
+      // Send the data using AJAX
+      $.ajax({
+        url: "/check-coupon", // Replace with your route URL
+        type: "POST",
+        data: dataToSend,
+        success: function (response) {
+          console.log("Coupon applied successfully");
+
+          // Show a success Swal alert
+          Swal.fire({
+            icon: "success",
+            title: "Coupon Applied!",
+            text: `You saved: ₹${response.maxDiscountAmount} on this Coupon`,
+            timer: 2000,
+          }).then(() => {
+            // After the success message, reload the page or perform any other action
+            location.reload();
+          });
+
+          // Assuming you have an HTML element to display the offer price
+          const offerPriceElement = $("#grandTotalPrice1");
+
+          // Update the content of the offer price element
+          offerPriceElement.text("₹" + response.totalPriceWithDiscount);
+
+          // Handle the response from the server here if needed
+        },
+        error: function (error) {
+          const response = JSON.parse(error.responseText);
+
+          // Show an error Swal alert
+          Swal.fire({
+            icon: "error",
+            title: "Coupon Error",
+            text: response.error,
+          });
+
+          // Handle the error response from the server here if needed
+        },
+      });
+    });
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    $("#removeCoupon").click(function (event) {
+      event.preventDefault();
+
+      // Send an AJAX request to remove the applied coupon
+      $.ajax({
+        url: "/remove-coupon", // Replace with your route URL
+        type: "POST",
+        success: function (response) {
+          console.log("Coupon removed successfully");
+          // Reload or update the cart page here if needed
+          window.location.reload(); // For example, reload the page
+        },
+        error: function (error) {
+          console.error("Failed to remove coupon:", error.responseText);
+          // Handle the error response from the server here if needed
+        },
+      });
+    });
+  });
+</script>
+<% } else { %>
+<!-- Display the cart is empty message -->
+<div
+  class="container vh-100 d-flex justify-content-center align-items-center"
+  style="text-align: center; padding: 100px"
+>
+  <h3>The cart is empty.</h3>
+  <a href="/products">Continue Shopping</a>
+</div>
+<%- include('../layouts/userFooter.ejs') %> <% } %>

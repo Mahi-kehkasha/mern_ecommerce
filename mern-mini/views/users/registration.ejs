@@ -1,0 +1,324 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<br><br>
+<br><br>
+<br><br>
+<div class="login-register-area pt-20 pb-120">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-7 col-md-12 ml-auto mr-auto">
+                <div class="login-register-wrapper">
+                    <div class="login-register-tab-list nav">
+                        <a data="tab" href="/login">
+                            <h4> login </h4>
+                        </a>
+                        <a class="active" data-toggle="tab" href="#">
+                            <h4> sign up </h4>
+                        </a>
+                    </div>
+                    <div class="tab-content">
+                        <div id="lg1" class="tab-pane active">
+                            <div class="login-form-container">
+                                <div class="login-register-form">
+                                    <p style="color: red;" id="message-container"></p>
+                                    <% if(typeof message !=='undefined' ){ %>
+                                        <p style="color:green">
+                                            <%=message %>
+                                        </p>
+                                        <% } %>
+                                    <form method="post" id="Form" name="myForm">
+
+                                        <span class="formerror text-danger" id="name-info"></span>
+                                        <input type="text" name="name" placeholder="Name" id="username"
+                                            onkeyup="validateName()" required/>
+                                        
+
+                                    <span class="formerror text-danger" id="email-info"></span>
+                                        <input name="email" placeholder="E-mail" type="email" id="email"
+                                            onkeyup=" validateEmail()" required/>
+                                        
+                                        <span class="formerror text-danger" id="mobileNo-info"></span>
+                                        <div>
+                                        <input style="width: 400px;" type="text" name="mno" placeholder="Mobile Number" id="mobileNo" onkeyup=" validateMobileNo()" required />
+                                        <button class="" style="height: 50px;width: 100px;border: none; background-color: rgb(24, 88, 207);color: white;"
+                                            type="button" onclick="sendOTP()">Send OTP</button>
+                                        </div>
+                                        
+<span class="formerror text-danger" id="otp-info"></span>
+<div>
+    <input style="width: 400px;" type="text" name="otp" placeholder="Enter OTP" id="otp" required />
+    <button class="" style="height: 50px;width: 100px;border: none; background-color: rgb(24, 88, 207);color: white;"
+        type="button" onclick="verifyOTP()">Verify OTP</button>
+</div>
+
+                                        <span class="formerror text-danger" id="password-info"></span>
+                                        <input type="password" name="password" placeholder="Password" id="password"
+                                            onkeyup="validatePassword()" required/>
+                                        
+
+                                         
+                                        <div class="button-box">
+                                            <button onclick="validateForm()" type="submit">Register</button>
+                                            <span class="formerror text-danger" id="submit-info"></span>
+
+                                        </div>
+
+                                        
+
+                                    </form>
+                                </div>
+                            </div>
+
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    var nameError = document.getElementById("name-info");
+    var emailError = document.getElementById("email-info");
+    var mobileNoError = document.getElementById("mobileNo-info");
+    var passwordError = document.getElementById("password-info");
+    var submitError = document.getElementById("submit-info");
+
+    function validateName() {
+        var name = document.getElementById("username").value;
+
+        if (name.length == 0) {
+            nameError.innerHTML = "Username is required";
+            return false;
+        }
+
+        if (!name.match(/(^[a-zA-Z][a-zA-Z\s]{0,20}[a-zA-Z]$)/)) {
+            nameError.innerHTML = "Invalid Username";
+            return false;
+        } else {
+            nameError.innerHTML = "";
+            return true;
+        }
+    }
+
+    function validateEmail() {
+        var email = document.getElementById("email").value;
+
+        if (email.length == 0) {
+            emailError.innerHTML = "E-mail is required";
+            return false;
+        }
+
+        if (
+            !email.match(
+                /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
+            )
+        ) {
+            emailError.innerHTML = "Invalid e-mail address";
+            return false;
+        }
+
+        emailError.innerHTML = "";
+        return true;
+    }
+
+    function validateMobileNo() {
+        var phone = document.getElementById("mobileNo").value;
+
+        if (phone.match(/^[0-9]{3}-[0-9]{4}-[0-9]{4}$/)) {
+            mobileNoError.innerHTML = "Enter Only Digits";
+            return false;
+        }
+
+        if (phone.length == 0) {
+            mobileNoError.innerHTML = "Mobile Number required";
+            return false;
+        }
+
+        if (phone.length !== 10) {
+            mobileNoError.innerHTML = "Mobile Number should be ten digits";
+            return false;
+        }
+
+        mobileNoError.innerHTML = "";
+        return true;
+    }
+
+    function validatePassword() {
+        var password = document.getElementById("password").value;
+
+        if (password.length == 0) {
+            passwordError.innerHTML = "Password is required";
+            return false;
+        }
+        var required = 4;
+        var left = required - password.length;
+
+        if (left > 0) {
+            passwordError.innerHTML = left + " more characters required";
+            return false;
+        }
+
+        passwordError.innerHTML = "";
+        return true;
+    }
+
+    function validateForm() {
+        if (
+            !validateName() &&
+            !validateEmail() &&
+            !validateMobileNo() &&
+            !validatePassword()
+        ) {
+            submitError.style.direction = "block";
+            submitError.innerHTML = "Please Fix the errors to Register";
+            event.preventDefault();
+            setTimeout(function () {
+                submitError.style.display = "none ";
+            }, 3000);
+            return false;
+        } else if (
+            !validateName() ||
+            !validateEmail() ||
+            !validateMobileNo() ||
+            !validatePassword()
+        ) {
+            submitError.style.direction = "block";
+            submitError.innerHTML = "Please Enter All Required Fields to Register";
+            event.preventDefault();
+            setTimeout(function () {
+                submitError.style.display = "none ";
+            }, 3000);
+            return false;
+        }
+    }
+
+
+</script>
+
+<!-- otp verification -->
+<!-- <script>
+    // Function to send OTP
+    function sendOTP() {
+        const mobileNo = document.getElementById('mobileNo').value;
+
+        // Send an AJAX request to your server to send the OTP
+        fetch('/send-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mobileNo: mobileNo })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.success) {
+                    // OTP sent successfully, show success message or handle as needed
+                    alert('OTP sent successfully');
+                } else {
+                    // OTP sending failed, show error message or handle as needed
+                    alert('Failed to send OTP');
+                }
+            })
+            .catch(error => {
+                console.error('Error sending OTP:', error);
+            });
+    }
+
+    // Function to verify OTP
+    function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+
+        // Send an AJAX request to your server to verify the OTP
+        fetch('/verify-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp: otp })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                if (data.success) {
+                    // OTP verification successful, show success message or handle as needed
+                    alert('OTP verification successful');
+                } else {
+                    // OTP verification failed, show error message or handle as needed
+                    alert('OTP verification failed');
+                }
+            })
+            .catch(error => {
+                console.error('Error verifying OTP:', error);
+            });
+    }
+</script> -->
+
+<!-- registration.ejs -->
+<script>
+    // Function to send OTP
+    function sendOTP() {
+        const mobileNo = document.getElementById('mobileNo').value;
+
+        // Send an AJAX request to your server to send the OTP
+        fetch('/send-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ mobileNo: mobileNo })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                const messageContainer = document.getElementById('message-container');
+                if (data.success) {
+                    // OTP sent successfully, show success message
+                    messageContainer.innerText = 'OTP sent successfully';
+                } else {
+                    // OTP sending failed, show error message
+                    messageContainer.innerText = 'Failed to send OTP';
+                }
+            })
+            .catch(error => {
+                console.error('Error sending OTP:', error);
+            });
+    }
+
+    // Function to verify OTP
+    function verifyOTP() {
+        const otp = document.getElementById('otp').value;
+
+        // Send an AJAX request to your server to verify the OTP
+        fetch('/verify-otp-signup', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify({ otp: otp })
+        })
+            .then(response => response.json())
+            .then(data => {
+                // Handle the response from the server
+                const messageContainer = document.getElementById('message-container');
+                if (data.success) {
+                    // OTP verification successful, show success message
+                    messageContainer.innerText = 'OTP verification successful';
+                } else {
+                    // OTP verification failed, show error message
+                    messageContainer.innerText = 'OTP verification failed';
+                }
+            })
+            .catch(error => {
+                console.error('Error verifying OTP:', error);
+            });
+    }
+</script>
+
+
+
+
+<% include('../layouts/userFooter.ejs') %>

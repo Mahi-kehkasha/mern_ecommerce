@@ -1,0 +1,255 @@
+<%- include('../layouts/userHeader.ejs') %>
+
+<br /><br />
+<div class="login-register-area pt-20 pb-120">
+  <div class="container" style="min-height: 100vh">
+    <div class="row">
+      <div class="col-lg-12 col-md-12 ml-auto mr-auto">
+        <div class="flex justify-content-center align-items-center">
+          <br /><br />
+          <h1 class="text-center text-success">Your Orders</h1>
+          <table class="table table-striped">
+            <thead class="bg-light">
+              <tr>
+                <th>SNo.</th>
+                <th>Order ID</th>
+                <th>Date & Address</th>
+                <th>BookName</th>
+                <th>Per Unit Price</th>
+                <th>Total</th>
+                <th>Payment Mode</th>
+                <th scope="col" style="color: green">Order Status</th>
+                <th>Invoice</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% orders.forEach((order, index)=> { %>
+
+              <tr>
+                <td>
+                  <p class="create_index"><%= index + 1 %></p>
+                </td>
+                <td><%= order.orderNumber %></td>
+                <td>
+                  <p class="mb-0" style="font-size: 15px">
+                    <span class="font-weight-bold text-success">
+                      <%= order.createdAt.toLocaleDateString('en-US', { day:
+                      '2-digit' , month: 'long' , year: 'numeric' }) %>
+                    </span>
+                  </p>
+                  <p class="mb-0" style="font-size: 15px">
+                    <%= order.shippingAddress.firstName %> <%=
+                    order.shippingAddress.lastName %>
+                  </p>
+                  <p class="fw-normal mb-0">
+                    <%= order.shippingAddress.street %>, <%=
+                    order.shippingAddress.city %>, <%=
+                    order.shippingAddress.state %>
+                  </p>
+                  <p class="fw-normal mb-1">
+                    Pincode: <%= order.shippingAddress.pincode %>
+                  </p>
+                </td>
+
+                <td><%- order.bookName %></td>
+
+                <td>₹<%- order.price %> x <%- order.quantity %></td>
+
+                <td>
+                  ₹<%- order.orderTotal %>
+                  <!-- Display the total amount here -->
+                </td>
+                <td><%= order.paymentMethod %></td>
+
+                <script>
+                  function calculateAndDisplayCountdown(
+                    bookId,
+                    countdownEndTime
+                  ) {
+                    console.log(bookId, countdownEndTime, "countdownEndTime");
+                    const countdownElement = document.getElementById(
+                      "countdown-" + bookId
+                    );
+                    const returnButton = countdownElement.nextElementSibling;
+
+                    const endTime = new Date(countdownEndTime);
+                    console.log(endTime, "endTime");
+                    const interval = setInterval(() => {
+                      const now = new Date();
+                      const timeDifference = endTime - now;
+
+                      console.log(interval, "interval");
+
+                      if (timeDifference <= 0) {
+                        clearInterval(interval);
+                        returnButton.style.display = "none";
+                        countdownElement.textContent = "";
+                      } else {
+                        const days = Math.floor(
+                          timeDifference / (1000 * 60 * 60 * 24)
+                        );
+                        const hours = Math.floor(
+                          (timeDifference % (1000 * 60 * 60 * 24)) /
+                            (1000 * 60 * 60)
+                        );
+                        const minutes = Math.floor(
+                          (timeDifference % (1000 * 60 * 60)) / (1000 * 60)
+                        );
+                        const seconds = Math.floor(
+                          (timeDifference % (1000 * 60)) / 1000
+                        );
+
+                        countdownElement.textContent = `${days}days & ${hours}hours left`;
+                      }
+                    }, 1000);
+                  }
+                </script>
+                <td>
+                  <% if (order.orderStatus==="Delivered" &&
+                  order.countdownEndTime) { %>
+                  <p style="color: green; font-weight: bold">
+                    <%= order.orderStatus %>
+                  </p>
+                  <div>
+                    <span id="countdown-<%= order.bookId %>"></span><br />
+                    <button
+                      class="btn btn-warning"
+                      onclick="updateOrderStatus('<%= order._id %>','<%= order.bookId %>','Returned')"
+                    >
+                      Return
+                    </button>
+                  </div>
+
+                  <% } else if (order.orderStatus==="Returned" ||
+                  order.orderStatus==="Cancelled" ) { %>
+                  <p style="color: rgb(138, 16, 5); font-weight: bold">
+                    <%= order.orderStatus %>
+                  </p>
+                  <% } else { %>
+                  <p style="color: green; font-weight: bold">
+                    <%= order.orderStatus %>
+                  </p>
+                  <div>
+                    <button
+                      class="btn btn-danger"
+                      onclick="updateOrderStatus('<%= order._id %>','<%= order.bookId %>','Cancelled')"
+                    >
+                      Cancel
+                    </button>
+                  </div>
+                  <% } %>
+                </td>
+                <td>
+                  <a
+                    href="/invoice?orderId=<%= order._id %>&bookId=<%= order.bookId %>"
+                    >Invoice</a
+                  >
+                </td>
+              </tr>
+              <script>
+
+                <% if (order.orderStatus === "Delivered" && order.countdownEndTime) { %>
+                    calculateAndDisplayCountdown('<%= order.bookId %>', '<%= order.countdownEndTime %>');
+                <% } %>
+              </script>
+
+              <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row justify-content-center">
+    <div class="col-12">
+      <nav>
+        <ul class="pagination justify-content-center">
+          <li class="page-item">
+            <a class="page-link prev" href="?page=<%= currentPage - 1 %>">
+              <i class="fa-solid fa-circle-chevron-left"></i>
+            </a>
+          </li>
+          <% for (let j = 1; j <= totalPages; j++) { %>
+          <li class="page-item <%= currentPage === j ? 'active' : '' %>">
+            <a class="page-link" href="?page=<%= j %>"> <%= j %> </a>
+          </li>
+          <% } %>
+          <li class="page-item">
+            <a class="page-link next" href="?page=<%= currentPage + 1 %>">
+              <i class="fa-solid fa-circle-chevron-right"></i>
+            </a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+
+  <script>
+    function updateOrderStatus(orderId, bookId, status) {
+      $.ajax({
+        url: "/update-order-status",
+        type: "POST",
+        data: {
+          orderId: orderId,
+          bookId: bookId,
+          newStatus: status,
+        },
+        success: function (response) {
+          location.reload();
+          // Find the order in the orders array and update the status
+          const orderToUpdate = orders.find((order) => order._id === orderId);
+          if (orderToUpdate) {
+            // Find the item in the order and update the status
+            const itemToUpdate = orderToUpdate.items.find(
+              (item) => item.bookId === bookId
+            );
+            if (itemToUpdate) {
+              itemToUpdate.status = status;
+              // Update the status text in the DOM directly
+              const statusTextElement = document.getElementById(
+                "statusText-" + bookId
+              );
+              if (statusTextElement) {
+                statusTextElement.textContent = status;
+              }
+              // Hide the buttons for "Delivered" and "Cancelled" status
+              const returnButton = document.getElementById(
+                "returnBtn-" + bookId
+              );
+              const cancelButton = document.getElementById(
+                "cancelBtn-" + bookId
+              );
+              if (status === "Delivered" || status === "Cancelled") {
+                returnButton.style.display = "none";
+                cancelButton.style.display = "none";
+              }
+            }
+          }
+        },
+
+        error: function (error) {
+          alert("Failed to update order status. Please try again.");
+        },
+      });
+    }
+
+    function updateDropdownOptions(bookId, selectedStatus) {
+      const dropdownMenu = document.querySelector(
+        "#statusDropdown" + bookId
+      ).nextElementSibling;
+      const options = dropdownMenu.querySelectorAll(".dropdown-item");
+
+      options.forEach((option) => {
+        const status = option.getAttribute("data-status");
+        if (status === selectedStatus) {
+          option.style.display = "none"; // Hide the selected status option
+        } else {
+          option.style.display = "block"; // Show other options
+        }
+      });
+    }
+  </script>
+
+  <%- include('../layouts/userFooter.ejs') %>
+</div>

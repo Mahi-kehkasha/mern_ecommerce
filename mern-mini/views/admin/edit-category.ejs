@@ -1,0 +1,56 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+    <main id="main" class="main">
+
+        <div class="pagetitle">
+            <h1>EDIT CATEGORY</h1>
+            <nav>
+                <ol class="breadcrumb">
+                    <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+                    <li class="breadcrumb-item">Category Management</li>
+                    <li class="breadcrumb-item active">Edit Category</li>
+                </ol>
+            </nav>
+        </div>
+
+        <section class="section">
+            <div class="row">
+
+
+                <div class="col-lg-6">
+
+                    <div class="card">
+                        <div class="card-body">
+                            <br><br>
+
+                            <form class="row g-3" action="/admin/edit-category/<%= category._id %>" method="post">
+                                <div class="col-12">
+                                    <label for="inputNanme4" class="form-label">Category Name</label>
+                                    <input type="text" class="form-control" id="catName" name="name" value="<%= category.name %>" required>
+                                </div>
+                                <div class="col-12">
+                                    <label for="inputEmail4" class="form-label">Description</label>
+                                    <input type="text" class="form-control" id="description" name="description" value="<%= category.description %>"
+                                        required>
+                                </div>
+
+                                <div class="text-center">
+                                    <button type="submit" class="btn btn-primary">Submit</button>
+                                    <a href="/admin/view-category" type="reset" class="btn btn-warning">Cancel</a>
+                                </div>
+                            </form>
+
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+        <% if(typeof message !=='undefined' ){ %>
+            <p style="color:green">
+                <%=message %>
+            </p>
+            <% } %>
+    </main>
+
+    <%- include('../layouts/adminFooter.ejs')%>

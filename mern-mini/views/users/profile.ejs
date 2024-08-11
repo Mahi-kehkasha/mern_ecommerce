@@ -1,0 +1,661 @@
+<%- include('../layouts/userHeader.ejs') %>
+<style>
+  body {
+    margin: 0;
+    padding-top: 40px;
+    color: #2e323c;
+    background: #f5f6fa;
+    position: relative;
+    height: 100%;
+  }
+
+  .account-settings .user-profile {
+    margin: 0 0 1rem 0;
+    padding-bottom: 1rem;
+    text-align: center;
+  }
+
+  .account-settings .user-profile .user-avatar {
+    margin: 0 0 1rem 0;
+  }
+
+  .account-settings .user-profile .user-avatar img {
+    width: 90px;
+    height: 90px;
+    -webkit-border-radius: 100px;
+    -moz-border-radius: 100px;
+    border-radius: 100px;
+  }
+
+  .account-settings .user-profile h5.user-name {
+    margin: 0 0 0.5rem 0;
+  }
+
+  .account-settings .user-profile h6.user-email {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 400;
+    color: #9fa8b9;
+  }
+
+  .account-settings .about {
+    margin: 2rem 0 0 0;
+    text-align: center;
+  }
+
+  .account-settings .about h5 {
+    margin: 0 0 15px 0;
+    color: #005ee1;
+  }
+
+  .account-settings .about p {
+    font-size: 0.825rem;
+  }
+
+  .form-control {
+    border: 1px solid #cfd1d8;
+    -webkit-border-radius: 2px;
+    -moz-border-radius: 2px;
+    border-radius: 2px;
+    font-size: 0.825rem;
+    background: #ffffff;
+    color: #2e323c;
+  }
+
+  .card {
+    background: #ffffff;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 0;
+    margin-bottom: 1rem;
+  }
+</style>
+
+<!-- my account wrapper start -->
+<div class="my-account-wrapper pt-120 pb-120">
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12">
+        <!-- My Account Page Start -->
+        <div class="myaccount-page-wrapper">
+          <!-- My Account Tab Menu Start -->
+
+          <div class="container">
+            <div class="row gutters">
+              <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="account-settings">
+                      <div class="user-profile">
+                        <div class="user-avatar">
+                          <img
+                            src="https://bootdey.com/img/Content/avatar/avatar7.png"
+                            alt="Maxwell Admin"
+                          />
+                        </div>
+                        <h5 class="user-name"><%=userdata?.name %></h5>
+                        <h6 class="user-email"><%=userdata?.email %></h6>
+                        <div class="justify-content-center d-flex">
+                          <h5>Wallet balance :</h5>
+                          <h4 style="color: red">
+                            ₹<%=userdata?.walletBalance %>
+                          </h4>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
+                <div class="card h-100">
+                  <div class="card-body">
+                    <div class="row gutters">
+                      <div
+                        class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12"
+                      >
+                        <h6 class="mb-2 text-primary">Personal Details</h6>
+                      </div>
+                      <form action="/update-personal-details" method="POST">
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                          <div class="form-group">
+                            <label for="fullName">Full Name</label>
+                            <input
+                              type="text"
+                              class="form-control"
+                              id="fullName"
+                              value="<%=userdata?.name %>"
+                              placeholder="Enter full name"
+                            />
+                          </div>
+                        </div>
+                        <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
+                          <div class="form-group">
+                            <label for="eMail">Email</label>
+                            <input
+                              type="email"
+                              class="form-control"
+                              id="eMail"
+                              value="<%=userdata?.email %>"
+                              placeholder="Enter email ID"
+                            />
+                          </div>
+                        </div>
+                        <div class="d-flex" style="width: 50%">
+                          <div
+                            class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
+                          >
+                            <div class="form-group">
+                              <button
+                                class="btn btn-primary"
+                                type="button"
+                                onclick="savePersonalDetails()"
+                              >
+                                Save changes
+                              </button>
+                            </div>
+                          </div>
+
+                          <div
+                            class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-6"
+                          >
+                            <div class="form-group">
+                              <span
+                                ><a
+                                  class="btn btn-warning"
+                                  href="#"
+                                  data-toggle="modal"
+                                  data-target="#changePassword"
+                                >
+                                  Change Password
+                                </a></span
+                              >
+                            </div>
+                          </div>
+                        </div>
+                      </form>
+
+                      <br /><br />
+                    </div>
+
+                    <% addresses.forEach((address, index)=> { %>
+                    <div class="card">
+                      <h5 class="card-header">
+                        <input
+                          class="form-check-input align-items-center ml-1"
+                          name="options"
+                          id="<%= address._id %>"
+                          value="<%= address._id %>"
+                          onclick="selectAddress('<%= address.firstName %>', '<%= address.lastName %>', '<%= address.companyName %>', '<%= address.street %>', '<%= address.landmark %>', '<%= address.city %>', '<%= address.state %>', '<%= address.mobileNo %>', '<%= address.email %>')"
+                        />
+                        &nbsp; &nbsp;&nbsp;&nbsp; Address <%= index + 1 %>&nbsp;
+                        &nbsp;&nbsp;
+                        <span
+                          ><a
+                            href="#"
+                            data-toggle="modal"
+                            data-target="#editAddressModal_<%= address._id %>"
+                          >
+                            <i class="fa-solid fa-edit"></i> </a></span
+                        >&nbsp;&nbsp;&nbsp;<span
+                          ><a onclick="deleteAddress('<%= address._id %>')"
+                            ><i class="fa-solid fa-trash"></i></a
+                        ></span>
+                      </h5>
+                      <div class="card-body">
+                        <p class="card-text" style="color: red">
+                          <%= address.firstName %> <%= address.lastName %>, <%=
+                          address.companyName %>, <%= address.street %>, <%=
+                          address.landmark %>, <%= address.city %> , <%=
+                          address.state %>, <%= address.mobileNo %>, <%=
+                          address.email %>
+                        </p>
+                      </div>
+                    </div>
+
+                    <!--  -->
+                    <div
+                      class="modal fade"
+                      id="editAddressModal_<%= address._id %>"
+                      tabindex="-1"
+                      role="dialog"
+                      aria-labelledby="editAddressModalLabel"
+                      aria-hidden="true"
+                    >
+                      <div
+                        class="modal-dialog modal-dialog-centered"
+                        role="document"
+                      >
+                        <div class="modal-content">
+                          <div class="modal-header">
+                            <h5 class="modal-title" id="editAddressModalLabel">
+                              Edit Address
+                            </h5>
+                            <button
+                              type="button"
+                              class="close"
+                              data-dismiss="modal"
+                              aria-label="Close"
+                            >
+                              <span aria-hidden="true">&times;</span>
+                            </button>
+                          </div>
+                          <div class="modal-body">
+                            <div class="row">
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>First Name</label>
+                                  <input
+                                    type="text"
+                                    id="firstName_<%= address._id %>"
+                                    value="<%= address.firstName %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>Last Name</label>
+                                  <input
+                                    type="text"
+                                    id="lastName_<%= address._id %>"
+                                    value="<%= address.lastName %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="billing-info mb-20">
+                                  <label>Company Name/ House Name</label>
+                                  <input
+                                    type="text"
+                                    id="companyName_<%= address._id %>"
+                                    value="<%= address.companyName %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="billing-info mb-20">
+                                  <label>Street Address</label>
+                                  <input
+                                    class="billing-address"
+                                    id="street_<%= address._id %>"
+                                    value="<%= address.street %>"
+                                    placeholder="House number and street name"
+                                    type="text"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="billing-info mb-20">
+                                  <label>Landmark</label>
+                                  <input
+                                    class="billing-address"
+                                    id="landmark_<%= address._id %>"
+                                    value="<%= address.landmark %>"
+                                    placeholder="Enter a Landmark"
+                                    type="text"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4">
+                                <div class="billing-info mb-20">
+                                  <label>Town / City</label>
+                                  <input
+                                    type="text"
+                                    id="city_<%= address._id %>"
+                                    value="<%= address.city %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>State</label>
+                                  <input
+                                    type="text"
+                                    id="state_<%= address._id %>"
+                                    value="<%= address.state %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>Pincode</label>
+                                  <input
+                                    type="text"
+                                    id="pincode_<%= address._id %>"
+                                    value="<%= address.pincode %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>Mobile No.</label>
+                                  <input
+                                    type="text"
+                                    id="mobileNo_<%= address._id %>"
+                                    value="<%= address.mobileNo %>"
+                                  />
+                                </div>
+                              </div>
+                              <div class="col-lg-4 col-md-6">
+                                <div class="billing-info mb-20">
+                                  <label>Email Address</label>
+                                  <input
+                                    type="text"
+                                    id="email_<%= address._id %>"
+                                    value="<%= address.email %>"
+                                  />
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <div class="modal-footer">
+                            <button
+                              type="button"
+                              class="btn btn-secondary"
+                              data-dismiss="modal"
+                            >
+                              Close
+                            </button>
+                            <button
+                              type="button"
+                              class="btn btn-primary"
+                              onclick="updateAddress('<%= address._id %>')"
+                            >
+                              Save changes
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                    <!--  -->
+
+                    <% }); %>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- My Account Page End -->
+    </div>
+  </div>
+
+  <!--  -->
+  <div
+    class="modal fade"
+    id="changePassword"
+    tabindex="-1"
+    role="dialog"
+    aria-labelledby="editAddressModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="editAddressModalLabel">Edit Address</h5>
+          <button
+            type="button"
+            class="close"
+            data-dismiss="modal"
+            aria-label="Close"
+          >
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col-12">
+              <div class="billing-info mb-20">
+                <label>Current Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="currentPassword"
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="billing-info mb-20">
+                <label>New Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="newPassword"
+                  value=""
+                />
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="billing-info mb-20">
+                <label>Confirm New Password</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="confirmNewPassword"
+                  value=""
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">
+            Close
+          </button>
+          <button
+            type="button"
+            class="btn btn-primary"
+            onclick="updatePassword()"
+          >
+            Save changes
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--  -->
+
+  <script>
+    $(document).ready(function () {
+      // When the "Open Modal" button is clicked, show the modal
+      $("#openModalBtn").click(function () {
+        $("#myModal").css("display", "block");
+      });
+
+      // When the close button (x) is clicked, hide the modal
+      $(".close").click(function () {
+        $("#myModal").css("display", "none");
+      });
+
+      // When the user clicks outside the modal, close it
+      $(window).click(function (event) {
+        if (event.target.id === "myModal") {
+          $("#myModal").css("display", "none");
+        }
+      });
+    });
+  </script>
+  <!-- Add this script in your HTML file (or in a separate JS file) -->
+  <script>
+    function updateAddress(addressId) {
+      // Get the updated values from the form fields
+      const updatedFirstName = document.getElementById(
+        `firstName_${addressId}`
+      ).value;
+      const updatedLastName = document.getElementById(
+        `lastName_${addressId}`
+      ).value;
+      const updatedCompanyName = document.getElementById(
+        `companyName_${addressId}`
+      ).value;
+      const updatedStreet = document.getElementById(
+        `street_${addressId}`
+      ).value;
+      const updatedLandmark = document.getElementById(
+        `landmark_${addressId}`
+      ).value;
+      const updatedCity = document.getElementById(`city_${addressId}`).value;
+      const updatedState = document.getElementById(`state_${addressId}`).value;
+      const updatedPincode = document.getElementById(
+        `pincode_${addressId}`
+      ).value;
+      const updatedMobileNo = document.getElementById(
+        `mobileNo_${addressId}`
+      ).value;
+      const updatedEmail = document.getElementById(`email_${addressId}`).value;
+      // Add more fields as needed
+
+      // You can use AJAX here to send the updated data to the server
+      $.ajax({
+        url: `/update-address/${addressId}`,
+        type: "POST",
+        data: {
+          firstName: updatedFirstName,
+          lastName: updatedLastName,
+          companyName: updatedCompanyName,
+          street: updatedStreet,
+          landmark: updatedLandmark,
+          city: updatedCity,
+          state: updatedState,
+          pincode: updatedPincode,
+          mobileNo: updatedMobileNo,
+          email: updatedEmail,
+          // Add more data fields here if needed
+        },
+        success: function (response) {
+          $(`#editAddressModal_${addressId}`).modal("hide");
+          location.reload();
+          // Reload the page or update the address on the page as needed
+          // You can add code here to update the address displayed on the page after successful update
+        },
+        error: function (error) {
+          // Handle the error response (optional)
+          alert("Failed to update address. Please try again.");
+        },
+      });
+    }
+  </script>
+  <!-- ... -->
+  <script>
+    function deleteAddress(addressId) {
+      // Display the SweetAlert prompt for confirmation
+      Swal.fire({
+        title: "Are you sure?",
+        text: "You will not be able to recover this address!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#d33",
+        cancelButtonColor: "#3085d6",
+        confirmButtonText: "Yes, delete it!",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          // If the user confirms, proceed with the deletion
+          $.ajax({
+            url: `/delete-address/${addressId}`,
+            type: "DELETE",
+            success: function (response) {
+              // Handle the success response (optional)
+              Swal.fire("Deleted!", "The address has been deleted.", "success");
+              // Optionally, you can reload the page after successful deletion
+              location.reload();
+            },
+            error: function (error) {
+              // Handle the error response (optional)
+              Swal.fire(
+                "Error!",
+                "Failed to delete the address. Please try again.",
+                "error"
+              );
+            },
+          });
+        }
+      });
+    }
+  </script>
+  <script>
+    // Function to handle form submission using AJAX
+    function savePersonalDetails() {
+      const fullName = $("#fullName").val();
+      const email = $("#eMail").val();
+      // Prepare the data to send to the server
+      const data = {
+        fullName: fullName,
+        email: email,
+      };
+
+      // Send the AJAX request to the server
+      $.ajax({
+        url: "/update-personal-details", // Replace with the server route to update personal details
+        method: "POST",
+        data: data,
+        success: function (response) {
+          // Handle the successful response from the server (if needed)
+          console.log("Personal details updated successfully:", response);
+          Swal.fire({
+            icon: "success",
+            title: "Personal Details updated successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+        error: function (error) {
+          // Handle errors (if needed)
+          console.error(
+            "Failed to update personal details:",
+            error.responseJSON.error
+          );
+          // Optionally, you can show an error message to the user
+          alert("Failed to update personal details. Please try again.");
+        },
+      });
+    }
+
+    // Attach the event handler to the "Save Changes" button
+    $("#saveChangesBtn").on("click", function (event) {
+      event.preventDefault(); // Prevent the default form submission
+      savePersonalDetails();
+    });
+  </script>
+  <!--  -->
+  <script>
+    function updatePassword() {
+      // Get the updated values from the form fields
+      const updatedCurrentPassword =
+        document.getElementById(`currentPassword`).value;
+      const updatedNewPassword = document.getElementById(`newPassword`).value;
+      const updatedConfirmNewPassword =
+        document.getElementById(`confirmNewPassword`).value;
+
+      $.ajax({
+        url: `/update-password`,
+        type: "POST",
+        data: {
+          currentPassword: updatedCurrentPassword,
+          newPassword: updatedNewPassword,
+          confirmNewPassword: updatedConfirmNewPassword,
+
+          // Add more data fields here if needed
+        },
+        success: function (response) {
+          $(`#changePassword`).modal("hide");
+          Swal.fire({
+            icon: "success",
+            title: "Your password has been updated successfully!",
+            showConfirmButton: false,
+            timer: 1500,
+          });
+          location.reload();
+        },
+        error: function (error) {
+          // Handle the error response (optional)
+          alert("Failed to update address. Please try again.");
+        },
+      });
+    }
+  </script>
+
+  <%- include('../layouts/userFooter.ejs') %>
+</div>

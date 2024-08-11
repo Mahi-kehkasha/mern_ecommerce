@@ -1,0 +1,129 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>ADD BANNER</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Banner Management</li>
+        <li class="breadcrumb-item active">Add Banner</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <br /><br />
+
+            <form
+              class="row g-3"
+              action="/admin/add-banner"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  required
+                />
+                <span id="titleError" style="color: red"></span>
+              </div>
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label">Subtitle</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="subtitle"
+                  name="subtitle"
+                  required
+                />
+                <span id="subtitleError" style="color: red"></span>
+              </div>
+
+              <div class="col-12">
+                <label for="image-banner" class="form-label"
+                  >Choose Image</label
+                >
+                <input
+                  type="file"
+                  class="form-control"
+                  id="images"
+                  name="images"
+                  accept="image/*"
+                  multiple
+                  required
+                />
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a type="reset" class="btn btn-warning">Cancel</a>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% if(typeof message !=='undefined' ){ %>
+  <p style="color: green"><%=message %></p>
+  <% } %>
+</main>
+
+<script>
+  $(document).ready(function () {
+    // Title input validation
+    $("#title").on("input", function () {
+      const inputValue = $(this).val();
+      const words = inputValue.split(" ");
+      let isValid = true;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 15) {
+          isValid = false;
+          words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+        }
+      }
+
+      if (!isValid) {
+        $(this).val(words.join(" "));
+        $("#titleError").text("Each word should be less than 15 characters.");
+      } else {
+        $("#titleError").text("");
+      }
+    });
+
+    // Subtitle input validation
+    $("#subtitle").on("input", function () {
+      const inputValue = $(this).val();
+      const words = inputValue.split(" ");
+      let isValid = true;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 15) {
+          isValid = false;
+          words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+        }
+      }
+
+      if (!isValid) {
+        $(this).val(words.join(" "));
+        $("#subtitleError").text(
+          "Each word should be less than 15 characters."
+        );
+      } else {
+        $("#subtitleError").text("");
+      }
+    });
+  });
+</script>
+
+<%- include('../layouts/adminFooter.ejs')%>

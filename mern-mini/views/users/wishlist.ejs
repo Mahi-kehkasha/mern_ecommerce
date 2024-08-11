@@ -1,0 +1,208 @@
+<%- include('../layouts/userHeader.ejs') %> <% if (wishlist.length > 0) { %>
+
+<div class="cart-main-area pt-115 pb-120">
+  <div class="container">
+    <br />
+    <h3 class="cart-page-title">Your Wishlist items</h3>
+    <div class="row">
+      <div class="col-lg-12 col-md-12 col-sm-12 col-12">
+        <form action="#">
+          <div class="table-content table-responsive cart-table-content">
+            <table>
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Product Name</th>
+                  <th>Unit Price</th>
+                  <th>Remove</th>
+                  <th>Buy Now</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% wishlist.forEach((item) => { %> <% if (item.bookId) { %>
+                <tr>
+                  <td class="product-thumbnail">
+                    <a href="#">
+                      <img
+                        style="width: 98px; height: 112px"
+                        src="<%= item.bookId.images && item.bookId.images.length > 0 ? `/images/product-imgs/${item.bookId.images[0]}` : '/images/default-image.jpg' %>"
+                        alt=""
+                      />
+                    </a>
+                  </td>
+                  <td class="product-name">
+                    <a href="#">
+                      <%= item.bookId.title || 'Unknown Title' %>
+                    </a>
+                    <% if (item.quantity > 1) { %>
+                    <span
+                      class="item-count"
+                      data-bookId="<%= item.bookId._id %>"
+                      >(x<%= item.quantity %>)</span
+                    >
+                    <% } %>
+                  </td>
+                  <% if (item.bookId.offerPrice) { %>
+                  <td class="">
+                    <span class="amount text-danger"
+                      >₹<%= item.bookId.offerPrice %></span
+                    ><br />
+                    <strike
+                      ><span class="amount"
+                        >₹<%= item.bookId.price %></span
+                      ></strike
+                    >
+                  </td>
+                  <% } else { %>
+                  <td class="product-price-cart">
+                    <span class="amount">₹<%= item.bookId.price %></span>
+                  </td>
+                  <% } %>
+                  <td style="display: none">
+                    <input
+                      type="text"
+                      value="<%= item.bookId.stock %>"
+                      id="maxstock"
+                      hidden
+                    />
+                  </td>
+                  <td class="product-remove">
+                    <a
+                      style="color: red"
+                      onclick="showConfirmation('<%= item._id %>')"
+                    >
+                      <i class="fa-solid fa-trash"></i>
+                    </a>
+                  </td>
+                  <td>
+                    <div class="pro-add-to-cart">
+                      <% if (item.bookId.stock !== 0) { %>
+                      <button
+                        class="addToCartButton"
+                        style="
+                          background-color: black;
+                          color: white;
+                          width: 120px;
+                          height: 40px;
+                        "
+                        data-bookId="<%= item.bookId._id %>"
+                        data-quantity="1"
+                        data-userId="<%= userId %>"
+                      >
+                        Add To Cart
+                      </button>
+                      <% } else { %>
+                      <a class="btn btn-danger">OUT OF STOCK</a>
+                      <% } %>
+                    </div>
+                  </td>
+                </tr>
+                <% } else { %>
+                <tr>
+                  <td colspan="5">Item details are not available.</td>
+                </tr>
+                <% } %> <% }); %>
+              </tbody>
+            </table>
+          </div>
+          <div class="row"></div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function showConfirmation(cartItemId) {
+      Swal.fire({
+        title: 'Are you sure?',
+        text: 'You are about to delete this item from your cart.',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonColor: '#d33',
+        cancelButtonColor: '#3085d6',
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'Cancel',
+      }).then((result) => {
+        if (result.isConfirmed) {
+          deleteItem(cartItemId);
+        }
+      });
+    }
+
+    function deleteItem(cartItemId) {
+      console.log(cartItemId, 'wish iddddd');
+      $.ajax({
+        url: '/delete-wishlist-item',
+        type: 'POST',
+        data: {
+          cartItemId: cartItemId,
+        },
+        success: function (response) {
+          Swal.fire({
+            icon: 'success',
+            title: 'Item deleted successfully!',
+            showConfirmButton: false,
+            timer: 1500,
+          }).then(() => {
+            location.reload();
+          });
+        },
+        error: function (error) {
+          Swal.fire({
+            icon: 'error',
+            title: 'Failed to delete item. Please try again.',
+            showConfirmButton: false,
+            timer: 1500,
+          });
+        },
+      });
+    }
+  </script>
+
+  <script>
+    $(document).ready(function () {
+      $('.addToCartButton').on('click', function () {
+        const bookId = $(this).attr('data-bookId');
+        const quantity = $(this).attr('data-quantity');
+        const userId = $(this).attr('data-userId');
+
+        $.ajax({
+          url: '/add-to-cart',
+          type: 'POST',
+          data: {
+            bookId: bookId,
+            quantity: quantity,
+            userId: userId,
+          },
+          success: function (response) {
+            Swal.fire({
+              position: 'top-right',
+              icon: 'success',
+              title: 'Your Book is added to the cart',
+              showConfirmButton: false,
+              timer: 1500,
+            });
+          },
+          error: function (error) {
+            Swal.fire({
+              icon: 'error',
+              title: 'Error!',
+              text: 'Failed to add item to cart. Please try again.',
+            });
+          },
+        });
+      });
+    });
+  </script>
+
+  <% } else { %>
+  <!-- Display the cart is empty message -->
+  <div
+    class="container vh-100 d-flex justify-content-center align-items-center"
+    style="text-align: center; padding: 100px"
+  >
+    <h3>The Wishlist is empty.</h3>
+    <a href="/products">Continue Shopping</a>
+  </div>
+  <%- include('../layouts/userFooter.ejs') %> <% } %>
+</div>

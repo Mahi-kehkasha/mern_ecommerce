@@ -1,0 +1,91 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>COUPONS</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Coupon Management</li>
+        <li class="breadcrumb-item active">Coupons</li>
+      </ol>
+    </nav>
+    <a href="/admin/add-coupon"
+      ><button
+        style="
+          background-color: rgb(76, 215, 76);
+          border: none;
+          border-radius: 5px;
+          color: white;
+        "
+      >
+        ADD NEW COUPON +
+      </button></a
+    >
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title"></h5>
+
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                  <th scope="col">SLNo</th>
+                  <th scope="col">Coupon Code</th>
+                  <th scope="col">Valid From</th>
+                  <th scope="col">Valid Upto</th>
+                  <th scope="col">Max Discount</th>
+                  <th scope="col">Min Purchase</th>
+                  <th scope="col">Max No. of Use</th>
+                  <th scope="col">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% coupons.forEach((coupon,index)=> { %>
+                <tr>
+                  <th scope="row"><%= index+1 %></th>
+                  <td><%= coupon.couponCode %></td>
+                  <td>
+                    <%= coupon.validFrom.toLocaleDateString('en-US', { day:
+                    '2-digit' , month: 'long' , year: 'numeric' }) %>
+                  </td>
+                  <td>
+                    <%= coupon.validUntil.toLocaleDateString('en-US', { day:
+                    '2-digit' , month: 'long' , year: 'numeric' }) %>
+                  </td>
+                  <td><%= coupon.maxDiscount %></td>
+                  <td><%= coupon.minPurchase %></td>
+                  <td><%= coupon.maxUses %></td>
+                  <td>
+                    <a
+                      href="/admin/edit-coupon/<%= coupon._id %>"
+                      class="btn btn-primary"
+                      >Edit</a
+                    >
+                  </td>
+                  <td><button class="btn btn-danger">Delete</button></td>
+                </tr>
+                <% }); %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <br />
+
+  <div class="container">
+    <div class="row justify-content-center">
+      <div class="col-12">
+        <nav></nav>
+      </div>
+    </div>
+  </div>
+</main>
+
+<%- include('../layouts/adminFooter.ejs')%>

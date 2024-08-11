@@ -1,0 +1,292 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>Add Products</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Product Management</li>
+        <li class="breadcrumb-item active">Add Products</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <form class="row g-3" method="post" enctype="multipart/form-data">
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label">Title</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="title"
+                  name="title"
+                  required
+                />
+                <span id="titleError" style="color: red"></span>
+              </div>
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label">Author</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="author"
+                  name="author"
+                  required
+                />
+                <span id="authorError" style="color: red"></span>
+              </div>
+              <div class="col-12">
+                <label class="form-label">Category</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="category">
+                    <% category.forEach(function(category) { %>
+                    <option value="<%=category._id%>">
+                      <%= category.name %>
+                    </option>
+                    <% }); %>
+                  </select>
+                </div>
+              </div>
+              <div class="col-12">
+                <label for="inputAddress" class="form-label">Price</label>
+                ₹<input
+                  type="number"
+                  class="form-control"
+                  id="price"
+                  name="price"
+                  required
+                />
+              </div>
+
+              <div class="col-12 d-flex">
+                <div class="col-5">
+                  <label for="inputAddress" class="form-label"
+                    >Discount in %</label
+                  >
+                  <input
+                    type="number"
+                    class="form-control"
+                    id="discount"
+                    name="discount"
+                    value="0"
+                    min="0"
+                    max="50"
+                    required
+                  />
+                </div>
+
+                <div class="col-5">
+                  <label for="inputAddress" class="form-label"
+                    >Offer Price</label
+                  >
+                  <input
+                    type="text"
+                    class="form-control"
+                    id="offerPrice"
+                    name="offerPrice"
+                  />
+                </div>
+              </div>
+
+              <span id="discountWarning" style="color: red; display: none">
+                Sorry, you can enter a discount percentage between 0 and 50.
+              </span>
+
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label">Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  required
+                />
+                <span id="descriptionError" style="color: red"></span>
+              </div>
+
+              <div class="col-12">
+                <label class="form-label">Language</label>
+                <div class="col-sm-10">
+                  <select class="form-select" name="language">
+                    <option value="english">English</option>
+                    <option value="hindi">Hindi</option>
+                    <option value="malayalam">Malayalam</option>
+                    <option value="tamil">Tamil</option>
+                    <option value="bengali">Bengali</option>
+                    <option value="telugu">Telugu</option>
+                    <option value="kannada">Kannada</option>
+                  </select>
+                </div>
+              </div>
+
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label">Stock</label>
+                <input
+                  type="number"
+                  class="form-control"
+                  id="stock"
+                  name="stock"
+                  value="5"
+                  min="1"
+                  required
+                />
+              </div>
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label"
+                  >Choose Images</label
+                >
+                <div class="col-sm-10">
+                  <input
+                    class="form-control"
+                    type="file"
+                    id="images"
+                    name="images"
+                    multiple
+                    required
+                  />
+                </div>
+              </div>
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a
+                  href="/admin/view-products"
+                  type="reset"
+                  class="btn btn-warning"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <% if(typeof message !=='undefined' ){ %>
+  <p style="color: green"><%=message %></p>
+  <% } %>
+</main>
+
+<script>
+  const discountInput = document.getElementById("discount");
+  const discountWarning = document.getElementById("discountWarning");
+
+  discountInput.addEventListener("input", function () {
+    const value = parseInt(this.value);
+    if (isNaN(value)) {
+      this.value = 0;
+      discountWarning.style.display = "none";
+    } else {
+      const newValue = Math.min(50, Math.max(0, value));
+      this.value = newValue;
+      discountWarning.style.display = newValue === value ? "none" : "block";
+      if (newValue !== value) {
+        setTimeout(() => {
+          discountWarning.style.display = "none";
+        }, 3000); // Hide the warning after 3 seconds
+      }
+    }
+  });
+</script>
+
+<script>
+  const priceInput = document.getElementById("price");
+  const discountInput1 = document.getElementById("discount");
+  const offerPriceInput = document.getElementById("offerPrice");
+
+  discountInput.addEventListener("input", function () {
+    const price = parseFloat(priceInput.value);
+    const discount = parseInt(this.value);
+
+    if (isNaN(discount)) {
+      this.value = 0;
+      // discountWarning.style.display = 'none';
+      offerPriceInput.value = "";
+    } else {
+      const validDiscount = Math.min(50, Math.max(0, discount));
+      this.value = validDiscount;
+      // discountWarning.style.display = validDiscount === discount ? 'none' : 'block';
+
+      if (validDiscount === 0) {
+        offerPriceInput.value = "";
+      } else {
+        const offerPrice = price - price * (validDiscount / 100);
+        offerPriceInput.value = isNaN(offerPrice) ? "" : offerPrice.toFixed(2);
+      }
+    }
+  });
+</script>
+
+<script>
+  $(document).ready(function () {
+    // Title input validation
+    $("#title").on("input", function () {
+      const inputValue = $(this).val();
+      const words = inputValue.split(" ");
+      let isValid = true;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 15) {
+          isValid = false;
+          words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+        }
+      }
+
+      if (!isValid) {
+        $(this).val(words.join(" "));
+        $("#titleError").text("Each word should be less than 15 characters.");
+      } else {
+        $("#titleError").text("");
+      }
+    });
+
+    // Subtitle input validation
+    $("#author").on("input", function () {
+      const inputValue = $(this).val();
+      const words = inputValue.split(" ");
+      let isValid = true;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 15) {
+          isValid = false;
+          words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+        }
+      }
+
+      if (!isValid) {
+        $(this).val(words.join(" "));
+        $("#authorError").text("Each word should be less than 15 characters.");
+      } else {
+        $("#authorError").text("");
+      }
+    });
+
+    $("#description").on("input", function () {
+      const inputValue = $(this).val();
+      const words = inputValue.split(" ");
+      let isValid = true;
+
+      for (let i = 0; i < words.length; i++) {
+        if (words[i].length > 15) {
+          isValid = false;
+          words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+        }
+      }
+
+      if (!isValid) {
+        $(this).val(words.join(" "));
+        $("#descriptionError").text(
+          "Each word should be less than 15 characters."
+        );
+      } else {
+        $("#descriptionError").text("");
+      }
+    });
+  });
+</script>
+
+<%- include('../layouts/adminFooter.ejs')%>

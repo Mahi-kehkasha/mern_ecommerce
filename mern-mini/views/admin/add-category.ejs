@@ -1,0 +1,119 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>ADD CATEGORY</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Category Management</li>
+        <li class="breadcrumb-item active">Add Category</li>
+      </ol>
+    </nav>
+  </div>
+
+  <section class="section">
+    <div class="row">
+      <div class="col-lg-6">
+        <div class="card">
+          <div class="card-body">
+            <br /><br />
+
+            <form class="row g-3" method="post">
+              <div class="col-12">
+                <label for="inputNanme4" class="form-label"
+                  >Category Name</label
+                >
+                <input
+                  type="text"
+                  class="form-control"
+                  id="catName"
+                  name="name"
+                  required
+                />
+                <span id="categoryError" style="color: red"></span>
+              </div>
+              <div class="col-12">
+                <label for="inputEmail4" class="form-label">Description</label>
+                <input
+                  type="text"
+                  class="form-control"
+                  id="description"
+                  name="description"
+                  required
+                />
+                <span id="descriptionError" style="color: red"></span>
+              </div>
+
+              <div class="text-center">
+                <button type="submit" class="btn btn-primary">Submit</button>
+                <a
+                  href="/admin/view-category"
+                  type="reset"
+                  class="btn btn-warning"
+                  >Cancel</a
+                >
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    $(document).ready(function () {
+      // Title input validation
+      $("#catName").on("input", function () {
+        const inputValue = $(this).val();
+        const words = inputValue.split(" ");
+        let isValid = true;
+
+        for (let i = 0; i < words.length; i++) {
+          if (words[i].length > 15) {
+            isValid = false;
+            words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+          }
+        }
+
+        if (!isValid) {
+          $(this).val(words.join(" "));
+          $("#categoryError").text(
+            "Each word should be less than 15 characters."
+          );
+        } else {
+          $("#categoryError").text("");
+        }
+      });
+
+      // Subtitle input validation
+      $("#description").on("input", function () {
+        const inputValue = $(this).val();
+        const words = inputValue.split(" ");
+        let isValid = true;
+
+        for (let i = 0; i < words.length; i++) {
+          if (words[i].length > 15) {
+            isValid = false;
+            words[i] = words[i].substring(0, 15); // Truncate the word to 15 characters
+          }
+        }
+
+        if (!isValid) {
+          $(this).val(words.join(" "));
+          $("#descriptionError").text(
+            "Each word should be less than 15 characters."
+          );
+        } else {
+          $("#descriptionError").text("");
+        }
+      });
+    });
+  </script>
+
+  <% if(typeof message !=='undefined' ){ %>
+  <p style="color: green"><%=message %></p>
+  <% } %>
+</main>
+
+<%- include('../layouts/adminFooter.ejs')%>

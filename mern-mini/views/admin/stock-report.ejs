@@ -1,0 +1,94 @@
+<%- include('../layouts/adminHeader.ejs') %>
+
+<main id="main" class="main">
+  <div class="pagetitle">
+    <h1>STOCK REPORTS</h1>
+    <nav>
+      <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="index.html">Dashboard</a></li>
+        <li class="breadcrumb-item">Data Management</li>
+        <li class="breadcrumb-item active">Stock Reports</li>
+      </ol>
+    </nav>
+  </div>
+
+  <div class="d-flex col-12">
+    <div class="ps-10">
+      <button class="btn btn-sm btn-secondary" onclick="exportToPDF()">
+        Export to PDF <i class="bi bi-filetype-pdf"></i>
+      </button>
+
+      <button class="btn btn-sm btn-warning" onclick="exportToExcel()">
+        Export to Excel <i class="bi bi-file-earmark-excel"></i>
+      </button>
+    </div>
+  </div>
+
+  <div id="pdfContainer"></div>
+
+  <br />
+  <!-- Display stock report if available -->
+
+  <section class="section" id="stock-report">
+    <div class="row">
+      <div class="col-lg-12">
+        <div class="card">
+          <div class="card-body">
+            <h5 class="card-title">Stock Report</h5>
+
+            <div id="table-container">
+              <table class="table table-hover">
+                <thead>
+                  <tr>
+                    <th scope="col">Book Name</th>
+                    <th scope="col">Category Name</th>
+                    <th scope="col">Stock Count</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% stockReport.forEach((item, index) => { %>
+                  <tr>
+                    <td><%= item.bookName %></td>
+                    <td><%= item.categoryName %></td>
+                    <td><%= item.stock %></td>
+                  </tr>
+                  <% }); %>
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <br />
+</main>
+<script src="/js/exportToExcel.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.9.3/html2pdf.bundle.min.js"></script>
+
+<script>
+  function exportToExcel() {
+    let table = new Table2Excel();
+    console.log(table);
+    table.export(document.querySelectorAll("table.table"));
+  }
+</script>
+
+<script>
+  function exportToPDF() {
+    const element = document.getElementById("stock-report");
+    element.style.width = "100%";
+    element.style.height = "900px";
+    let opt = {
+      margin: 10,
+      filename: "Stock-report.pdf",
+      image: { type: "jpeg", quality: 1 },
+      html2canvas: { scale: 1 },
+      jsPDF: { unit: "mm", orientation: "landscape" },
+    };
+    html2pdf().set(opt).from(element).save();
+  }
+</script>
+
+<%- include('../layouts/adminFooter.ejs')%>

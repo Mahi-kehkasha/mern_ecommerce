@@ -1,0 +1,118 @@
+<%- include('../layouts/userHeader.ejs') %>
+<style>
+  .hero-slider-img-1 {
+    position: relative;
+  }
+
+  .banner-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+    z-index: 1; /* Ensure the overlay is above the image */
+  }
+
+  .banner-overlay h4,
+  .banner-overlay h1 {
+    margin: 0;
+  }
+</style>
+
+<div class="slider-area bg-gray">
+  <div
+    id="heroCarousel"
+    class="carousel slide hero-slider-active-1 hero-slider-pt-1 nav-style-1 dot-style-1"
+    data-bs-interval="false"
+    <!--
+    Remove
+    data-bs-ride
+    to
+    make
+    it
+    static
+    --
+  >
+    >
+    <div class="carousel-inner">
+      <% banners.forEach((banner, index) => { %>
+      <div class="carousel-item <%= index === 0 ? 'active' : '' %>">
+        <div class="single-hero-slider single-animation-wrap">
+          <div
+            id="carouselImages<%= index %>"
+            class="carousel slide"
+            data-bs-ride="carousel"
+            data-bs-wrap="true"
+            data-bs-interval="3000"
+          >
+            <div class="carousel-inner">
+              <% banner.images.forEach((image, imageIndex) => { %>
+              <div
+                class="carousel-item <%= imageIndex === 0 ? 'active' : '' %>"
+              >
+                <div
+                  class="hero-slider-img-1 slider-animated-1 position-relative"
+                >
+                  <div class="banner-overlay">
+                    <h4 class="animated" style="color: red; font-size: 100px">
+                      <%= banner.title %>
+                    </h4>
+                    <h1
+                      class="animated"
+                      style="
+                        color: rgb(75, 4, 75);
+                        font-size: 60px;
+                        font-weight: 800;
+                      "
+                    >
+                      <%= banner.subtitle %>
+                    </h1>
+                  </div>
+                  <img
+                    class="animated"
+                    src="/images/product-imgs/<%= image %>"
+                    alt=""
+                  />
+                </div>
+              </div>
+              <% }); %>
+            </div>
+            <a
+              class="carousel-control-prev"
+              href="#carouselImages<%= index %>"
+              role="button"
+              data-bs-slide="prev"
+            >
+              <span
+                class="carousel-control-prev-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Previous</span>
+            </a>
+            <a
+              class="carousel-control-next"
+              href="#carouselImages<%= index %>"
+              role="button"
+              data-bs-slide="next"
+            >
+              <span
+                class="carousel-control-next-icon"
+                aria-hidden="true"
+              ></span>
+              <span class="visually-hidden">Next</span>
+            </a>
+          </div>
+        </div>
+      </div>
+      <% }); %>
+    </div>
+    <!-- ... controls ... -->
+  </div>
+</div>
+
+<div class="service-area">
+  <!-- ... other content ... -->
+</div>
+
+<%- include('../layouts/userFooter.ejs') %>
